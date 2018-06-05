@@ -1,3 +1,4 @@
+#,name,type1,type2,hp,atk,def,satk,sdef,spd,rank
 3,Venusaur,Grass,Poison,80,82,83,100,100,80,73
 6,Charizard,Fire,Flying,78,84,78,109,85,100,68
 9,Blastoise,Water,,79,83,100,85,105,78,8
