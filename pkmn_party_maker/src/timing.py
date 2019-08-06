@@ -76,13 +76,18 @@ METRICS RECORDED:
 #TODO: could color code the functions based on their algorithnic type... i.e. related to pkmn, move, file I/O, user I/O, pokepy, db loading, etc
 
 #TODO: an OOP "Timer" design to this might (??) help for testing, so we can open and close a set of timers and their stats easily...?
+
+#TODO: this might be complicated, but if we could somehow remove the timer overhead time (by some estimate or other means) from the timing calculations,
+		we might be able to 
+		i might have hinted at this elsewhere but basically the lowest level timed function may be accurate but because of timer overhead the parent function's time
+		will include the overhead time associated with timing that lowest level (child) function
 """
 
 # ----- imports -----
 
 #from timeit import default_timer as timer
 import helper_functions as hf
-from pglobals import DEBUG
+from pglobals import DEBUG 
 
 # ----- globals -----
 

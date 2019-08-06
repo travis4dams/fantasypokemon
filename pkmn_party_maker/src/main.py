@@ -104,6 +104,7 @@ def alt_main():
 	#test_create_all_pokemon()
 	#test_pkpy_move_cache
 	#test_move_cache()
+	#test_corner_case_evolutions()
 	#squit()
 	return
 
@@ -264,6 +265,57 @@ def test_all_set(all_set, m):
 	result = m in all_set
 	end_timer()
 	return result
+
+# ... for now i will just test the movesets of the "competitive viable" pokemon, usually at the end of an evolution
+# test the following pokemon:
+# --- main case: new "branching" evolutions ---
+# 133, 134, 135, 136 and 196, 197 (Eevee and Evos), 
+# 43, 44, 45, 182 (Oddish Gen 1 Evos and Bellossom)
+# 60, 61, 62, 186 (Poliwag Gen 1 Evos and Politoed)
+# 79, 80, 199 (Slowpoke, Slowbro, Slowking)
+# 106, 107, 236, 237 (Tyrogue and Evos)
+# --- optional case: new (non-branching) evolutions --- 
+# steelix
+# scizor
+# blissey
+# kingdra
+# crobat
+# porygon
+# --- optional case: baby pokemon ---
+# pichu
+# cleffa
+# igglybuff# 
+# smoochum
+# elekid
+# magby
+# togepi togetic
+# TODO: baby pokemon also might be impt to test, esp with moveset generation... 
+#	 	even if they are in a consistent "chain" with no branches,
+#		and even if they are currently banned in game usage
+# TODO: test steelix, scizor, and other pokemon who were given an additional evo in gen 2 (even if it is not a "branch")
+def test_corner_case_evolutions():
+
+	# sets might be more appropriate but perhaps keeping an order to the dexnums will come in handy
+	# for such a small dataset it doesn't matter
+	eevee_dexnums = [133, 134, 135, 136, 196, 197]
+	oddish_dexnums = [43, 44, 45, 182]
+	poliwag_dexnums = [43, 44, 45, 182]
+	slowpoke_dexnums = [79, 80, 199]
+	tyrogue_dexnums = [106, 107, 236, 237]
+
+	# test_case_dexnums is a list of lists of ints
+	test_case_dexnums = [eevee_dexnums, oddish_dexnums, poliwag_dexnums, slowpoke_dexnums, tyrogue_dexnums]
+	for evolution_list in test_case_dexnums:
+		for dexnum in evolution_list:
+			pkmn = Pokemon(dexnum)
+			evo_path = pkmn.get_evolution_chain()
+			# print and wait for all of these
+			evo_chain = pkmn.get_evolution_chain()
+
+			lm = pkmn.get_learnable_moves()
+
+	return 
+
 
 def get_teams_length():
 	global teams

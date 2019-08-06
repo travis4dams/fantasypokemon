@@ -197,7 +197,7 @@ class Pokemon:
 		out_str += "\n.OT_Name=" + str(self.get_OT_name()) # it should already be a string but oh well
 		for i in range(1,5):
 			move_prefix = "Move" + str(i)
-			out_str += "\n." + move_prefix + "=" + str(self.get_move(i))
+			out_str += "\n." + move_prefix + "=" + str(self.get_move(i).get_id())
 		out_str += "\n.Gender=" + str(self.get_gender_id())
 		end_timer()
 		return out_str

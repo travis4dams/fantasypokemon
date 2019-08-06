@@ -12,7 +12,7 @@ import ruleset
 # DEUBG makes the program more likely to halt due to unexpected inputs/outputs/conditions
 # considering these factors, enabling DEBUG may cause the script to run significantly slower
 # if DEBUG is disabled, it may prevent timing.py timing, or it may override this and continue functioning regardless of DEBUG
-DEBUG = True
+DEBUG = False
 
 # main pokepy client
 client = pokepy.V2Client()
