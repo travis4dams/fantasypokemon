@@ -1,0 +1,43 @@
+
+
+cubone(#104) - Lv. 100
+--- Move1:198
+--- Move2:7
+--- Move3:237
+--- Move4:182
+
+
+magneton(#82) - Lv. 100
+--- Move1:102
+--- Move2:86
+--- Move3:199
+--- Move4:237
+
+
+heracross(#214) - Lv. 100
+--- Move1:179
+--- Move2:224
+--- Move3:29
+--- Move4:168
+
+
+alakazam(#65) - Lv. 100
+--- Move1:115
+--- Move2:92
+--- Move3:223
+--- Move4:5
+
+
+weezing(#110) - Lv. 100
+--- Move1:123
+--- Move2:188
+--- Move3:241
+--- Move4:153
+
+
+ariados(#168) - Lv. 100
+--- Move1:92
+--- Move2:169
+--- Move3:156
+--- Move4:228
+

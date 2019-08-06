@@ -1,0 +1,5 @@
+team_make algorithm 
+(assuming default "build all teams" case)
+
+for team_num in num_teams:
+	

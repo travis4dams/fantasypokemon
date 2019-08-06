@@ -1,0 +1,43 @@
+
+
+yanma(#193) - Lv. 100
+--- Move1:17
+--- Move2:203
+--- Move3:103
+--- Move4:98
+
+
+vulpix(#37) - Lv. 100
+--- Move1:241
+--- Move2:104
+--- Move3:185
+--- Move4:53
+
+
+magmar(#126) - Lv. 100
+--- Move1:241
+--- Move2:63
+--- Move3:149
+--- Move4:108
+
+
+ponyta(#77) - Lv. 100
+--- Move1:172
+--- Move2:182
+--- Move3:97
+--- Move4:24
+
+
+ariados(#168) - Lv. 100
+--- Move1:92
+--- Move2:169
+--- Move3:76
+--- Move4:81
+
+
+rhyhorn(#111) - Lv. 100
+--- Move1:205
+--- Move2:91
+--- Move3:31
+--- Move4:201
+
