@@ -1,33 +1,34 @@
 # ----- main description -----
 
 """ 
- functions related to timing other functions for performance purposes
- timing can be used to track how long a function or even a segment of code takes
- if you are tracking a segment of code (and not a function), 
- or you are using a function name that is identical to another tracked function name, 
- or you simply want to supply an alternate name for 
- you should supply an alternate function name to start_timer() and end_timer()
- a lack of input to start_timer() and end_timer() causes them to default to the calling function's name
- these functions do nothing if DEBUG is enabled
+functions related to timing other functions for performance purposes
+timing can be used to track how long a function or even a segment of code takes
+if you are tracking a segment of code (and not a function), 
+or you are using a function name that is identical to another tracked function name, 
+or you simply want to supply an alternate name for a function,
+you should supply an alternate function name to start_timer() and end_timer()
+a lack of input to start_timer() and end_timer() causes them to default to the calling function's name
 
- NOTE - the timing will be slightly innacurate due to overhead/errors of certain sources
- 		for start_timer, it introduces overhead in the time it starts start_timer completing until it fetches stores the start_time at the very end
- 						AND due to inherent programming language function ovehead,
- 						 the start_time of the function comes before the moment we finish returning to the parent function and resume computation
- 		for end_timer, overhead time is the time between when 
+NOTE - these functions do nothing if DEBUG is enabled
+
+NOTE - the timing will be slightly innacurate due to overhead/errors of certain sources
+		for start_timer, it introduces overhead in the time it starts start_timer completing until it fetches stores the start_time at the very end
+						AND due to inherent programming language function ovehead,
+						 the start_time of the function comes before the moment we finish returning to the parent function and resume computation
+		for end_timer, overhead time is the time between when 
 		... BUT thee errors will be inherent/constant to all functions and thus comparisons are still valid
- 		you could perhaps test this overhead time by starting then immediately stopping a function, or something similar
+		you could perhaps test this overhead time by starting then immediately stopping a function, or something similar
 		hopefully the overhead is minimal compared to function computation time...
 		it then might be possible to remove the overhead from timing estimates...?
 
- METRICS RECORDED:
- 0 function name
- 1 number of calls
- 2 total time length
- 3 average time length
- 4 % of all tracked runtimes (the value stored in funct_stats will be an ESTIMATE until given a precise calculation when requested in timing_stats)
- 5 (not yet implemented) (if DEBUG off and catching exceptions) - # of errors thrown; avg # of errors'
- 6 (neither added nor implemented) - % of all tracked runtimes MINUS any tracked input() time spent waiting for user input 
+METRICS RECORDED:
+0 function name
+1 number of calls
+2 total time length
+3 average time length
+4 % of all tracked runtimes (the value stored in funct_stats will be an ESTIMATE until given a precise calculation when requested in timing_stats)
+5 (not yet implemented) (if DEBUG off and catching exceptions) - # of errors thrown; avg # of errors'
+6 (neither added nor implemented) - % of all tracked runtimes MINUS any tracked input() time spent waiting for user input 
 									  user input function actually has this value set, but it may not be so relevant, 
 								  	  i.e. 150%	would mean user input delay time was 1.5 times the sum of other timed methods			
 """
@@ -81,7 +82,7 @@ from pglobals import DEBUG
 # ----- globals -----
 
 # flag indicating whether the execution of these timing functions is independent of DEBUG flag
-timing_ignores_DEBUG = True
+timing_ignores_DEBUG = False
 
 # funct_stats is a dict mapping a string "function name" to a tuple containing the above metrics in that numbered order#
 funct_stats = {}

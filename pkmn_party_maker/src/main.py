@@ -35,7 +35,7 @@ import random
 # ----- MAIN VARIABLES -----
 
 # team output file variables
-out_dir = "teams/" 			# location of
+out_dir = "../teams/" 		# location of team output folder
 out_prefix = "pkmnteam_"	# filename prefix for all team output files
 out_extension = ".txt"		# file type of team output files
 
@@ -101,11 +101,11 @@ def main():
 def alt_main():
 	#test_repeat_team_make()
 	#test_move_in()
-	test_create_all_pokemon()
+	#test_create_all_pokemon()
 	#test_pkpy_move_cache
-	test_move_cache()
-	squit()
-	#return
+	#test_move_cache()
+	#squit()
+	return
 
 # setups any relevantvariables from pglobals
 # ... I originally tried to have some of the asserts in pglobals.py but that was causing recursive import problems I think
@@ -642,7 +642,13 @@ def team_show(team_num = None):
 		team_species_names = []
 		team_nicknames = []
 		team_types = []
-		team_move_strs = []
+
+		# team_moves is handled differently - we keep track of a list AND dict mapping move names to their move objects
+		# we track the dict is so we don't have to call Move.get_move() with a string input later
+		team_moves_strs = []
+		team_moves = {}
+
+		# iterate through this team
 		for j in range(len(team)):
 
 			# grab info for each pokemon
@@ -672,23 +678,28 @@ def team_show(team_num = None):
 			for k in range(len(pkmn_moves)):
 				m = pkmn_moves[k]
 				m_name = m.get_name()
-				team_move_strs.append(m_name)
+				team_moves[m_name] = m
+				team_moves_strs.append(m_name)
+
+		# instead of converting team_moves into a list, we need to keep track of a team_moves_strs independently
+		# since a list allows duplicates but a dict does not
+		#team_moves_strs = list(team_moves)
 	
 		# tab align pokemon names, types, and moves (per team)
 		# NOTE: this must be done BEFORE any text coloring, or else it will not format properly
 		tab_format(team_species_names)
 		tab_format(team_nicknames)
 		tab_format(team_types)
-		tab_format(team_move_strs)
+		tab_format(team_moves_strs)
 
 		# color the move strings AFTER they've been tab formatted
-		for j in range(len(team_move_strs)):
-			pkmn_move_name = team_move_strs[j].strip()
-			m = Move(pkmn_move_name)
+		for j in range(len(team_moves_strs)):
+			move_name_detabbed = team_moves_strs[j].strip() # strip it off the tabs we just gave it so we can index into team_moves
+			m = team_moves[move_name_detabbed]
 			mtypename = m.get_type_str() # name of the move's type, i.e. m == Fire Blast --> mtypename == "Fire"			
 			type_color_str = get_type_color(mtypename)			
-			colored_str = type_color_str + pkmn_move_name + get_all_resets()			
-			team_move_strs[j] = colored_str
+			colored_str = type_color_str + team_moves_strs[j] + get_all_resets()			
+			team_moves_strs[j] = colored_str
 
 		# this is a sloppy workaround to take "(Ice, Water)" string from the strings in team_types,
 		# then find the base type names in them aka "Ice" and "Water", then replace those with colored versions
@@ -725,7 +736,7 @@ def team_show(team_num = None):
 				if (k)%4 == 0:
 					move_str += "{"
 				# the 4th (k == 3), 8th (k == 7), 12th (k == 11) and so on move strings end the list of four moves for that pokemon
-				move_str += team_move_strs[k]
+				move_str += team_moves_strs[k]
 				if (k+1)%4 == 0:
 					move_str += "}"
 

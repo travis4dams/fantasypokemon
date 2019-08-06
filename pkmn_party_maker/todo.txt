@@ -339,3 +339,5 @@ x---------x organize this todo list into categories
 	- does this include all of hte moveset process and everything?
 
 - diagraming out main algorithms i.e. team_make could be helpful
+
+- does performance rely on disk much? in other words if the code/files were on a regular HD vs an SSD would it make much of a difference?
