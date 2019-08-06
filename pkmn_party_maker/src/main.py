@@ -840,7 +840,7 @@ def team_load(fname1, fname2):
 	print("\nDone loading team2.")
 	#TODO: should the team files we load already have the player and team names in them?
 	input_player_and_team_names()
-	printd("\nteamload complete.\n")
+	print("\nteamload complete.\n")
 	end_timer()
 
 # helper function for team_load()
@@ -849,6 +849,8 @@ def team_load(fname1, fname2):
 def load_team_file(fname, backup_fname = None):
 
 	start_timer()
+
+	global out_dir
 
 	# reformat and check fname
 	assertd(is_str(fname))
@@ -859,7 +861,7 @@ def load_team_file(fname, backup_fname = None):
 	loaded_fname = "" # loaded_fname is used for debugging purposes
 	if fname_formatted.lower() != "default":
 
-		fpath = "teams/" + fname_formatted + out_extension
+		fpath = out_dir + fname_formatted + out_extension
 
 		try:
 			f = open(fpath,"r+")
@@ -875,7 +877,7 @@ def load_team_file(fname, backup_fname = None):
 			# we have a legit backup file - attempt to load it
 			else:
 				printd("File not found for load_team_file(): " + str(fpath) + " ... attempting to load backup: " + str(backup_fname))
-				backup_fpath = "teams/" + backup_fname + out_extension
+				backup_fpath = out_dir + backup_fname + out_extension
 				try:
 					f = open(fbackup_fpathpath,"r+")
 					loaded_fname = backup_fname
@@ -887,7 +889,7 @@ def load_team_file(fname, backup_fname = None):
 	# if user did not supply a fname, attempt to open default (backup) file
 	else:		
 
-		backup_fpath = "teams/" + backup_fname + out_extension
+		backup_fpath = out_dir + backup_fname + out_extension
 
 		try:
 			f = open(backup_fpath,"r+")

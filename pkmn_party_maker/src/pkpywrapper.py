@@ -1059,41 +1059,41 @@ def is_legal_nickname(n):
 def get_type_color(type_name):
 	start_timer()
 	assertd(is_str(type_name))
-	type_name_formatted = type_name.strip().capitalize()
+	type_name_formatted = type_name.strip().lower()
 	assertd(type_name_formatted in all_type_names)
-	if type_name_formatted == 'Bug':
+	if type_name_formatted == 'bug':
 		return get_color("green") + get_style("dim")
-	elif type_name_formatted == 'Dark':
+	elif type_name_formatted == 'dark':
 		return get_color("black") + get_style("bright")	
-	elif type_name_formatted == 'Dragon':
+	elif type_name_formatted == 'dragon':
 		return get_color("blue") + get_style("dim")
-	elif type_name_formatted == 'Electric':
+	elif type_name_formatted == 'electric':
 		return get_color("yellow") + get_style("bright")
-	elif type_name_formatted == 'Fighting':
+	elif type_name_formatted == 'fighting':
 		return get_color("red") + get_style("normal")
-	elif type_name_formatted == 'Fire':
+	elif type_name_formatted == 'fire':
 		return get_color("red") + get_style("bright")
-	elif type_name_formatted == 'Flying':
+	elif type_name_formatted == 'flying':
 		return get_color("cyan") + get_style("normal")
-	elif type_name_formatted == 'Ghost':
+	elif type_name_formatted == 'ghost':
 		return get_color("magenta") + get_style("dim")
-	elif type_name_formatted == 'Grass':
+	elif type_name_formatted == 'grass':
 		return get_color("green") + get_style("bright")
-	elif type_name_formatted == 'Ground':
+	elif type_name_formatted == 'ground':
 		return get_color("yellow") + get_style("dim")
-	elif type_name_formatted == 'Ice':
+	elif type_name_formatted == 'ice':
 		return get_color("cyan") + get_style("bright")
-	elif type_name_formatted == 'Normal':
+	elif type_name_formatted == 'normal':
 		return get_color("white") + get_style("bright")
-	elif type_name_formatted == 'Poison':
+	elif type_name_formatted == 'poison':
 		return get_color("magenta") + get_style("normal")
-	elif type_name_formatted == 'Psychic':
+	elif type_name_formatted == 'psychic':
 		return get_color("magenta") + get_style("bright")
-	elif type_name_formatted == 'Rock':
+	elif type_name_formatted == 'rock':
 		return get_color("red") + get_style("dim")
-	elif type_name_formatted == 'Steel':
+	elif type_name_formatted == 'steel':
 		return get_color("white") + get_style("dim")
-	elif type_name_formatted == 'Water':
+	elif type_name_formatted == 'water':
 		return get_color("blue") + get_style("bright")
 	else:
 		printd("unrecognized type name to get_type_color(): " + str(type_name))

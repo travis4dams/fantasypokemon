@@ -15,6 +15,8 @@ import operator
 from pglobals import DEBUG
 from timing import *
 
+input_wait_identifier = "USER INPUT DELAY"
+
 # returns the lesser of a and b
 def lesser(a,b):
 	return a if a < b else b
@@ -412,7 +414,7 @@ def sort_list_of_tuples(tlist, tindex, reverse = False):
 
 # wrapper function for input() and times it, and records that as "user input delay" in timing.py stats
 def input_and_time(*args):
-	input_wait_identifier = "USER INPUT DELAY"
+	global input_wait_identifier
 	start_timer(input_wait_identifier)
 	result = input(*args)
 	end_timer(input_wait_identifier)

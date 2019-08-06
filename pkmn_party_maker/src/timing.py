@@ -14,6 +14,7 @@ NOTE - these functions do nothing if DEBUG is enabled
 NOTE - ... based on testing, it seems timing functions is adding SIGNIFICANT overhead (like a factor of 5x) to the overall runtime
 		this doesn't mean that our timing of hte functions is necessarily inaccurate, but simply that measuring the time of a function
 		is adding significant computational time
+		... perhaps the primary cause of my results is having a timer in a really low level (aka super short runtime) function?
 
 NOTE - the timing will be slightly innacurate due to overhead/errors of certain sources
 		for start_timer, it introduces overhead in the time it starts start_timer completing until it fetches stores the start_time at the very end
@@ -53,8 +54,8 @@ METRICS RECORDED:
 #TODO: are there existing extensive "timing" libraries like what im trying to build here? ... 
 #		... i should look into modern programming practices and supporting libs and stuff... might be some good debugging python stuff out there
 
-#TODO: as indicated by the description above, "function" is bad naming scheme for something which COULD be 
-# 		... then again it could be considered a sub-function if you wanna get technical.
+#TODO: as indicated by the description above, "function" is bad naming scheme for something which COULD just be a section of code
+# 		... then again any section of code could be considered a sub-function if you wanna get technical.
 #		... a better name might fit it or maybe it's technically fine.
 
 #TODO: perhaps having get_time() function here instead of helper_functions would optimize things
@@ -268,6 +269,10 @@ def display_timing_stats(fname = None):
 	total_tracked_time = end_time - script_start_time
 
 	print("\nTOTAL RUNTIME: " + str(round(total_tracked_time,2)) + " seconds.\n")
+
+	if hf.input_wait_identifier in funct_stats:
+		percent_str = str(round(funct_stats[hf.input_wait_identifier][2] / total_tracked_time, 4) * 100)
+		print("\nUser input delay accounted for " + percent_str + "% of the runtime.\n")
 
 	# print stats for all tracked functions
 	if fname == None:
