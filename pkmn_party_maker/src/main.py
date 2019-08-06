@@ -265,6 +265,16 @@ def test_all_set(all_set, m):
 	end_timer()
 	return result
 
+def get_teams_length():
+	global teams
+	return len(teams)
+
+def get_team(i):
+	assertd(is_int(i))
+	global teams
+	assertd(i < len(teams))
+	return teams[i]
+
 # help function - called to list and desctibe commands
 def help(cmdintf):
 	start_timer()
@@ -559,7 +569,7 @@ def team_edit(team_num, slot_num, is_legendary = False):
 	for i in range(len(team)):
 		if i != slot_num:
 			new_team_ids.append(team[i].get_dexnum())
-	teams[team_num][slot_num] = randomize_PKMN(team_ids, is_legendary)
+	teams[team_num][slot_num] = randomize_PKMN(new_team_ids, is_legendary)
 
 	# end message
 	print("Done replacing.")
