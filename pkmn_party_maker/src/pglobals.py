@@ -6,9 +6,12 @@ import ruleset
 
 # ----- PGLOBALS VARIABLES -----
 
-# debug flag used for printd, assertd and other potential statements only meant to run when debugging
-# DEBUG will generally cause more verbose output and also be more likely to halt the program due to unexpected inputs/outputs/conditions
-# DEBUG also may cause timing stats to not display... see timing.py, it may override that and output stats regardless of DEBUG
+# debug flag 
+# rintd, assertd (often used as function I/O checks) and other potential statements only execute if this flag is enabled
+# DEBUG generally causes more verbose output
+# DEUBG makes the program more likely to halt due to unexpected inputs/outputs/conditions
+# considering these factors, enabling DEBUG may cause the script to run significantly slower
+# if DEBUG is disabled, it may prevent timing.py timing, or it may override this and continue functioning regardless of DEBUG
 DEBUG = False
 
 # main pokepy client

@@ -11,6 +11,10 @@ a lack of input to start_timer() and end_timer() causes them to default to the c
 
 NOTE - these functions do nothing if DEBUG is enabled
 
+NOTE - ... based on testing, it seems timing functions is adding SIGNIFICANT overhead (like a factor of 5x) to the overall runtime
+		this doesn't mean that our timing of hte functions is necessarily inaccurate, but simply that measuring the time of a function
+		is adding significant computational time
+
 NOTE - the timing will be slightly innacurate due to overhead/errors of certain sources
 		for start_timer, it introduces overhead in the time it starts start_timer completing until it fetches stores the start_time at the very end
 						AND due to inherent programming language function ovehead,
