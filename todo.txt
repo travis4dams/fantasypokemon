@@ -343,3 +343,11 @@ x---------x organize this todo list into categories
 - does performance rely on disk much? in other words if the code/files were on a regular HD vs an SSD would it make much of a difference?
 
 - do not allow 2 1HKO's or 2 of protect/detect or 2 of endure/whatever in the same moveset... stuff like this, where it would be redundant and bad
+
+- update readmes
+
+- clean code (i.e. asdf.py)
+
+- add readmes to folders
+
+- convert todo into git issues
