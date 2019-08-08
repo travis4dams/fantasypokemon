@@ -351,3 +351,7 @@ x---------x organize this todo list into categories
 - add readmes to folders
 
 - convert todo into git issues
+
+- consider fully loading move/pokemon cache @ start of program. depends on how much this impacts start time obvs.
+
+- have PkHex commands edit pokemon in party directly

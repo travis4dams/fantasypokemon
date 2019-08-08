@@ -561,6 +561,12 @@ class Pokemon:
 			assertd(is_pokepy_move(pokepy_move),
 				"Bad move in pkmn moves in get_learnable_moves(); move isn't a move object. Type: " + get_class_name(pokepy_move) + " str: " + str(pokepy_move))
 
+			# TODO: we need to check not only that the move was ADDED in gen 1 or gen 2 (i.e. 1 <= move_id <= 251)
+			#		you also need to check if this pokemon could learn this move DURING gen 1 or gen 2
+			#		for example marowak got an ice form in like gen 7 or w/e, so even though blizzard EXISTED in gen 1 (id < 251),
+			#		marowak couldn't learn it
+			#		so i need to use my old code logic of checking "user version" here
+
 			# only accept moves that were learnable in gen 1 or gen 2
 			move_id = int(get_move_id(pokepy_move))
 			if not move_class.is_legal_move_id(move_id):

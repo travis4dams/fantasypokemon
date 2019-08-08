@@ -77,7 +77,7 @@ default_underevolved_dexnums_list = [1,2,4,5,7,8,10,11,13,14,16,17,19,21,23,25,2
 218,220,223,228,231,236,246,247]
 
 # list of banned move_ids
-default_banned_move_ids_list = [6,10,20,33,35,40,49,82,83,99,100,104,117,132,138,141,150,167,171,173,206,213,214,216,218,249,250]
+default_banned_move_ids_list = [6,10,20,33,35,40,49,82,83,99,100,104,117,132,138,141,150,167,171,173,189,206,213,214,216,218,249,250]
 
 # dict of banned move_ids mapped to a string of the move name
 #TODO: get move names in same format as pokepy
@@ -103,6 +103,7 @@ default_banned_moves_dict = {6:"Pay Day",
 167:"Triple Kick",
 171:"Nightmare",
 173:"Snore",
+189:"Mud-Slap",
 206:"False Swipe",
 213:"Attract",
 214:"Sleep Talk",

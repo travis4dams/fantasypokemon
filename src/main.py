@@ -35,7 +35,7 @@ import random
 # ----- MAIN VARIABLES -----
 
 # team output file variables
-out_dir = "../teams/" 		# location of team output folder
+out_dir = "../teams/main/" 	# location of team output folder
 out_prefix = "pkmnteam_"	# filename prefix for all team output files
 out_extension = ".txt"		# file type of team output files
 
@@ -625,6 +625,10 @@ def team_edit(team_num, slot_num, is_legendary = False):
 
 	# end message
 	print("Done replacing.")
+
+	# save the entire team after every edit
+	# this assumes we've reached this point because the team is correctly formated to be saved
+	team_save()
 
 	end_timer()
 
