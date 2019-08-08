@@ -113,44 +113,56 @@ class CmdInterface:
 
 		# parse base command, interpret any subcommands, and pass any arguments onto the appropriate function in main
 		# if any input is faulty, parse_subcmds() will print errors and return None
-		# functions that never use arguments won't call parse_subcmds()
-		# subcmds lists all the arguments; the if/elif/else cases below then unpack and pass on those arguments (i.e. teamedit)
+		# functions that never use arguments will cause subcmds to be an empty list
+		# subcmds is a list containing all of the arguments in the correct order ...
+		# ... the if/elif/else cases below then unpack and pass on those arguments (i.e. teamedit)
 		#TODO: looking into *args or w/e could probably simplify a lot of this
 		subcmds = self.parse_subcmds(input_cmd_list)
+
+		# parse_subcmds() failed: return so input loop can repeat
 		if subcmds == None:
 			return
 
+		# help
 		if base_cmd == 'help':
 			help(subcmds[0]) # help takes no arguments from the command prompt, but we pass it the cmdinterface object
 
-		elif base_cmd == 'quit': # while loop condition in input_loop() but eh should handle this but eh just incase
-			assertd(False,"base_cmd should not be quit to interpret_cmd()")
+		# quit (should not be reached - while loop condition in input_loop() should handle this but this is here just in case)
+		elif base_cmd == 'quit': # 
+			assertd(False,"base_cmd to interpret_cmd() should not equal \"quit\"")
 			squit()
 
+		# ruleset
 		elif base_cmd == 'ruleset':
 			ruleset_cmd()
 
+		# teamshow
 		elif base_cmd == 'teamshow':
 			if(len(subcmds)>0):
 				team_show(subcmds[0])
 			else:
 				team_show()
 
+		# teamcopy
 		elif base_cmd == 'teamcopy':
 			team_copy()
 
+		# teamsave
 		elif base_cmd == 'teamsave':
 			team_save()
 
+		# teammake
 		elif base_cmd == 'teammake':
 			if(len(subcmds)>0):
 				team_make(subcmds[0])
 			else:
 				team_make()
 				
+		# teamedit
 		elif base_cmd == 'teamedit':
 			team_edit(subcmds[0], subcmds[1], subcmds[2])
 
+		# teamload
 		elif base_cmd == 'teamload':
 			if(len(subcmds) == 2):
 				team_load(subcmds[0],subcmds[1])
@@ -164,8 +176,8 @@ class CmdInterface:
 		return
 
 	# ensures that proper input is given to main command functions
-	# returns list
-	# returns an empty list if it parsed no subcommands
+	# returns list of subcmds, which may be strs ints or other types
+	# returns an empty list if it parsed no subcommands (i.e. for functions that need no arguments, such as "help" or "quit")
 	# returns None if there was an error parsing subcommands
 	# TODO: check is_int here and elsewhere
 	def parse_subcmds(self, input_cmd_list):
@@ -173,8 +185,6 @@ class CmdInterface:
 			"Bad input_cmd_list to parse_subcmds(). Type: " + get_class_name(input_cmd_list) + " str: " + str(input_cmd_list))
 
 		base_cmd = input_cmd_list[0]
-
-		subcmds = []
 
 		#NOTE: technically, the else of elif's below shouldnt be necessary if you are returning cases properly within each if...
 		# 		but elif's can just help prevent checking each if and just streamlines things imo
@@ -185,43 +195,43 @@ class CmdInterface:
 
 		# quit - takes no arguments so return an empty list
 		elif base_cmd == 'quit':
-			return subcmds
+			return []
 
 		# ruleset - (currently) takes no arguments so return an empty list
 		#TODO: ruleset arguments
 		elif base_cmd == 'ruleset':
-			return subcmds
+			return []
 
 		# teamshow
 		elif base_cmd == 'teamshow':
 			# if no optional arguments supplied by user, pass no arguments to teamshow
 			if len(input_cmd_list) <= 1:
-				return subcmds
+				return []
 			# subcmd exists, check that its an int
 			subcmd = input_cmd_list[1]
-			if not is_int(subcmd):
-				print("Team number argument to teamshow is not an integer: " + str(subcmd))
+			if not is_positive_int(subcmd):
+				print("Team number argument to teamshow is not a positive integer: " + str(subcmd))
 				return None
-			# subcmd is an int, check if its in range
-			if subcmd < 0 or subcmd >= get_teams_length():
+			# subcmd is a positive int, check if its in range
+			if subcmd > get_teams_length():
 				print("Team number argument to teamshow out of range: " + str(subcmd) + 
 					". There are currently " + str(get_teams_length()) + " teams.")
 				return None
-			# subcmd is good, add it to subcmds and return subcmds
-			subcmds = [subcmd]
-			return subcmds
+			# subcmd is good, return it in a list
+			return [subcmd]
 
+		# teamcopy - (currently) takes no arguments so return an empty list
 		elif base_cmd == 'teamcopy':
-			return subcmds
+			return []
 
 		elif base_cmd == 'teamsave':
-			return subcmds
+			return []
 
 		# teammake
 		elif base_cmd == 'teammake':
 			# if no optional arguments supplied by user, pass no arguments to teammake
 			if len(input_cmd_list) <= 1:
-				return subcmds
+				return []
 			# subcmd exists, check that its an int
 			subcmd = int(input_cmd_list[1])
 			if not is_int(subcmd):
@@ -233,8 +243,7 @@ class CmdInterface:
 					". There are currently " + str(get_teams_length()) + " teams.")
 				return None
 			# subcmd is good, add it to subcmds and return subcmds
-			subcmds = [subcmd]
-			return subcmds
+			return [subcmd]
 
 		# teamedit
 		elif base_cmd == 'teamedit':
@@ -267,8 +276,7 @@ class CmdInterface:
 				legendary_flag = int(input_cmd_list[3])
 				if legendary_flag == 1:
 					legendary_bool = True
-			subcmds = [team_num, slot_num, legendary_bool]
-			return subcmds
+			return [team_num, slot_num, legendary_bool]
 
 		elif base_cmd == 'teamload':
 			if len(input_cmd_list) != 3:
@@ -284,8 +292,7 @@ class CmdInterface:
 			if not is_str(fname2): 
 				print("fname2 argument to teamload is not a string: " + str(fname2))
 				return None
-			subcmds = [fname1, fname2]
-			return subcmds
+			return [fname1, fname2]
 
 		# shouldn't be reached based on structure of interpret_cmd()'s if-else structure
 		else:
