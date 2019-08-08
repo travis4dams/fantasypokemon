@@ -596,32 +596,31 @@ def input_player_and_team_names():
 	team_strs = [player1_name_input_formatted, team1_name_input_formatted, player2_name_input_formatted, team2_name_input_formatted]
 
 # rerandom a specific pokemon on a specific team
+# note that team_num = 1 corresponds to teams[0], and slot_num = 1 corresponds to teams[team_num][0]
+# in other words team_num and slot_num are numbered in 1-base fashion
 def team_edit(team_num, slot_num, is_legendary = False):
 
 	start_timer()
 
 	# check and setup inputs
+	# TODO: isnt this check redundant with cmd_interface parse_subcmds or whatever? be consistent w/ design
 	global teams
-	assertd(is_int(team_num) and team_num >= 0 and team_num < len(teams))
-	assertd(is_int(slot_num))
-	teams_len = len(teams)
-	assertd(team_num < teams_len)
-	team = teams[team_num]
+	assertd(is_positive_int(team_num) and team_num <= len(teams))
+	team = teams[team_num-1]
 	assertd(is_list(team))
-	team_len = len(teams)
-	assertd(slot_num < team_len)
+	assertd(is_positive_int(slot_num) and slot_num <= len(team))
+	replaced_pkmn = teams[team_num-1][slot_num-1]
+	# could assert replaced_pkmn is a Pokemon
 
 	# start message
 	print("Replacing the Pokemon in slot " + str(slot_num) + " of team " + str(team_num) + " with a new Pokemon...")
 
-	# replace the pokemon
-	replaced_pkmn = teams[team_num][slot_num]
-	new_team_ids = []
-	# this assumes you CAN rerandom the same pokemon with team_edit
+	# replace the pokemon (this currently assumes you CAN rerandom the same pokemon with team_edit)	
+	new_team_ids = [] 
 	for i in range(len(team)):
-		if i != slot_num:
+		if i != slot_num-1:
 			new_team_ids.append(team[i].get_dexnum())
-	teams[team_num][slot_num] = randomize_PKMN(new_team_ids, is_legendary)
+	teams[team_num-1][slot_num-1] = randomize_PKMN(new_team_ids, is_legendary)
 
 	# end message
 	print("Done replacing.")
@@ -699,6 +698,7 @@ def team_show(team_num = None):
 		else:
 			num_newlines = 2
 		
+		# add player and team name to out_str
 		out_str += "\n"*num_newlines + player_name + player_name_postfix + team_name + ":"
 
 		# --- done parsing player/team names ---
@@ -806,8 +806,8 @@ def team_show(team_num = None):
 				if (k+1)%4 == 0:
 					move_str += "}"
 
-			# add to out_str
-			out_str += "\n" + str(j) + ": " + team_species_names[j].title() + team_nicknames[j] + team_types[j] + move_str
+			# add pokemon and their associated stats / moves to out_str
+			out_str += "\n" + str(j+1) + ": " + team_species_names[j].title() + team_nicknames[j] + team_types[j] + move_str
 	
 	print(out_str)
 
@@ -827,6 +827,8 @@ def team_copy():
 # request team name(s)
 # ensure positions in each list here align, i.e. index 0 is referencing team 1 across all these lists
 # TODO: implement team_strs to team_save
+# TODO: i believe team save may actually have an issue if it is run twice and generates the same timestamp... aka runs twice in the same second
+#		in such a case it may overwrite existing files. this is a rare case in actual use though.
 def team_save():
 	start_timer()
 	#assertd(len(cmd_strs) == len(teams) * ruleset_team_size)

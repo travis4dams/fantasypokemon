@@ -355,3 +355,9 @@ x---------x organize this todo list into categories
 - consider fully loading move/pokemon cache @ start of program. depends on how much this impacts start time obvs.
 
 - have PkHex commands edit pokemon in party directly
+
+- seadra should be kingdra
+
+- alternate playmode - random a type, then choose a pokemon among that type; other player randoms another unselected type, chooses one among those; then keep going until both teams are built.
+
+- add learnable_moves lists as attrtibutes to a pokemon when these have been initialized. or perhaps to a pokemon species class, or just a dict for now or something... that way if we edit a pokemons moves and want replacements, we dont have to regenerate its learnable moves and such

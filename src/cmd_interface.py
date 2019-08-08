@@ -204,7 +204,8 @@ class CmdInterface:
 				return None
 			# subcmd is an int, check if its in range
 			if subcmd < 0 or subcmd >= get_teams_length():
-				print("Team number argument to teamshow out of range: " + str(subcmd) + ". There are currently " + str(get_teams_length()) + " teams.")
+				print("Team number argument to teamshow out of range: " + str(subcmd) + 
+					". There are currently " + str(get_teams_length()) + " teams.")
 				return None
 			# subcmd is good, add it to subcmds and return subcmds
 			subcmds = [subcmd]
@@ -228,7 +229,8 @@ class CmdInterface:
 				return None
 			# subcmd is an int, check if its in range
 			if subcmd < 0 or subcmd >= get_teams_length():
-				print("Team number argument to teammake out of range: " + str(subcmd) + ". There are currently " + str(get_teams_length()) + " teams.")
+				print("Team number argument to teammake out of range: " + str(subcmd) + 
+					". There are currently " + str(get_teams_length()) + " teams.")
 				return None
 			# subcmd is good, add it to subcmds and return subcmds
 			subcmds = [subcmd]
@@ -241,22 +243,24 @@ class CmdInterface:
 				return None
 			# check that team_num is an int
 			team_num = int(input_cmd_list[1])
-			if not is_int(team_num): 
-				print("Team number argument to teamedit is not an integer: " + str(team_num))
+			if not is_positive_int(team_num): 
+				print("Team number argument to teamedit is not a positive integer: " + str(team_num))
 				return None
 			# team_num is an int, check if its in range
-			if team_num < 0 or team_num >= get_teams_length():
-				print("Team number to teamedit out of range: " + str(team_num) + ". There are currently only " + str(get_teams_length()) + " teams.")
+			if team_num < 1 or team_num > get_teams_length():
+				print("Team number to teamedit out of range: " + str(team_num) + 
+					". There are currently only " + str(get_teams_length()) + " teams.")
 				return None
 			# team_num is good, check slot_num
-			team = get_team(team_num)
+			team = get_team(team_num-1)
 			# check that slot_num is an int
 			slot_num = int(input_cmd_list[2])
-			if not is_int(slot_num):
-				print("Slot number argument to teamedit is not an integer: " + str(slot_num))
+			if not is_positive_int(slot_num):
+				print("Slot number argument to teamedit is not a positive integer: " + str(slot_num))
 				return None
-			if slot_num < 0 or slot_num >= len(team):
-				print("Slot number to teamedit out of range: " + str(slot_num) + ". There are currently only " + str(get_teams_length()) + "slots.")
+			if slot_num < 1 or slot_num > len(team):
+				print("Slot number to teamedit out of range: " + str(slot_num) + 
+					". There are currently only " + str(len(team)) + " slots for team " + str(team_num) + ".")
 				return None
 			legendary_bool = False
 			if len(input_cmd_list) > 3:
