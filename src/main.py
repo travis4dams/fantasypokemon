@@ -35,7 +35,7 @@ import random
 # ----- MAIN VARIABLES -----
 
 # team output file variables
-out_dir = "../teams/main/" 	# location of team output folder
+out_dir = "teams/main/" 	# location of team output folder
 out_prefix = "pkmnteam_"	# filename prefix for all team output files
 out_extension = ".txt"		# file type of team output files
 
