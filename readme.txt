@@ -10,7 +10,7 @@ NO REVENUE IS DERIVED FROM THIS PROJECT IN ANY FORM WHATSOEVER (including social
 
 Pokemon and all related Intellectual Property (IP) are subject to copyright by its respective owners, including Nintendo, Nintendo of America, Game Freak, and any other related owning or publishing entities. The contributors to this project do not claim any ownership of said IP, and again, no revenue is derived from this project by any means. Please support the official release.
 
-This project is intended to expand the skills and experience of the developers, and to provide personal, non-profit entertainment for users. 
+This project is intended to expand the programming skills and experience of the developers, and to provide personal, non-profit entertainment for users. 
 
 The contributors to this project do not condone illegaly obtaining copyrighted software. This project will not supply ROMs or other related files (or information on how to obtain them) to users. The user is assumed to have obtained such files by legal means. Furthermore, in its current state as of 8.7.19, this project does not even directly interact with ROMs or other related files. 
 
@@ -20,7 +20,7 @@ The contributors to this project do not assume any legal responsibility for any 
 
 ----- Introduction -----
 
-These scripts are intended to generate teams of random Pokemon that meet certain rules. These teams can then be converted into commands used by the program "PkHex" to modify the save of a GBC ROM ("game") file so that the teams are available for play in Pokemon Stadium. :)
+These scripts are intended to generate teams of random Pokemon that meet certain rules. These teams can then be converted into commands used by the program "PkHex" to modify the save of a Game Boy Color (GBC) game (ROM) file so that the teams are available for play in Pokemon Stadium 2. :)
 
 The standard use case is as simple as running the python script, pasting the output from the script into PkHex to modify the GBC save file, and booting the emulator. 
 
@@ -33,53 +33,6 @@ teamcopy - copies the "PkHex command" text for each Pokemon, one at a time, to t
 teamsave - saves each team to a .txt file so it can be loaded or referenced later. Currently, teams are automatically saved after teammake and teamedit.
 teamload - loads two teams, one from each of two provided file paths, into the program.
 
-The standard ruleset is as follows:
-
---- no banned pokemon
-
-	--- baby
-
-	--- legendaries
-
-	--- unevolved
-
-
---- moveset restrictions
-
-	--- a Pokemon's learnable moves includes those it can learn from leveling, a prior evolution, TM/HM, Tutors, and even Special Events
-		--- Special Event moves may be flagged as "illegal" (pink text) in Pokemon Stadium 2, but are technically legal
-
-	--- Pokemon's first move is of its first type (if possible)
-
-	--- Pokemon's second move is of its second type (if possible)
-
-	--- "inferior" moves are replaced with learnable "superior" moves
-		--- i.e. if Charmander can learn Tackle and Strength, do not include Tackle in its learnable move pool
-
-	--- no banned moves
-		--- most banned moves are banned because they are useless or nearly useless in comba (i.e. Teleport, Bind, Mud-Slap, Tackle, etc.)
-		--- most moves that depend on the user/enemy BEING sleep are banned
-			--- i.e. Dream Eater, Snore, Nightmare, Sleep Talk, etc.
-			--- ideally these moves are unbanned and instead the program simply gives these moves only when the appropriate associated move is also present
-		--- most moves that depend on gender are banned
-			--- gender isn't working correctly in the script rn so ... banned
-		--- more controversial/opinionated bans
-			--- Double Team and Minimize 
-				--- evasion stacking needs a specific response, and with randomized moves, imo a Pokemon with high evasion may be practically unstoppable
-			--- Mud-Slap
-				--- too many Ground pokemon are randoming this as their required Ground move, and it makes them less threatening and the games longer and less exciting.
-				--- this move can have legitimate use and eventually should be unbanned as it is less problematic than evasion buffs (since you can simply swap out if your accuracy is debuffed too much)... but given our current implementation, its coming up too much. 
-			--- Rage
-				--- imo just not good and gets randomed too much since basically every Pokemon can learn it
-			--- False Swipe
-			--- Return/Frustration
-				--- currently Pokemon are set to 0 happiness, making Return do minimum damage (sometimes <1 damage!) and Frustration does max
-					--- as a workaround... just do neither
-				--- even if Frustration is viable and enabled, the move would appear really often since practically every Pokemon can learn it
-
-	--- (not yet enforced) a pokemon must have at least one damaging move (unclear if moves inflicting Poison status are "damaging" but I'd say yes)
-
-
 
 ----- Resources -----
 
@@ -89,10 +42,10 @@ The standard ruleset is as follows:
 Python3 - necessary framework to run the scripts
 - https://www.python.org/download/releases/3.0/)
 
-"Pokepy" - main data source backend
+"Pokepy" - main Pokemon "database" backend
 API 
 - https://pokeapi.github.io/pokepy/
-- https://pokeapi.co/docs/v2.html/#berries
+- https://pokeapi.co/docs/v2.html/
 GitHub
 - https://github.com/PokeAPI/pokepy
 
@@ -106,6 +59,11 @@ batch editor guides
 - https://github.com/kwsch/PKHeX/issues/516
 - https://projectpokemon.org/home/forums/topic/45398-using-pkhex-how-to-use-the-batch-editor-in-pkhex/
 
+pytest - python testing library
+- http://doc.pytest.org/
+- https://semaphoreci.com/community/tutorials/testing-python-applications-with-pytest
+
+
 
 ----- Installation / Setup -----
 
@@ -116,29 +74,114 @@ To run this script, the following programs are needed:
 --- PkHex (https://projectpokemon.org/home/files/file/1-pkhex/)
 --- N64 Emulator (I use Project64 v2.2.0.3. However as of 8.7.19 they seem to be up to v2.3.2-202. If you get a recent version I'm sure it'll work fine.https://www.pj64-emu.com/download/project64-latest)
 
-You will also need ROM files for Pokemon Stadium 2 for the N64, and a Generation 2 (Gold, Silver or Crystal; aka "GSC") GBC ROM and .sav file. (As noted in the copyright disclaimer, the contributors to this project will NEVER supply ROMs or information on how to obtain them.)
+To run this script, the following Python library dependencies must be installed (i.e. via "pip install")
+--- Pokepy (https://github.com/PokeAPI/pokepy)
+--- pytest (http://doc.pytest.org/en/latest/getting-started.html)
 
-I STRONGLY SUGGEST CREATING A COPY OF THE SAVE FILE if it is one that you care about. The program works by OVERWRITING EXISTING POKEMON, so obviously you don't want any Pokemon in the save file that you intend to keep.
+To run this script, the following files are needed (as noted in the copyright disclaimer, the contributors to this project will NEVER supply ROMs or information on how to obtain them):
+--- N64 ROM files for Pokemon Stadium 2 
+--- GBC ROM and .sav file for Pokemon Gold, Silver or Crystal. 
 
-Once you have these files downloaded, you'll want to first point your N64 Emulator to the location of the GBC ROM and .sav files you intend to load into Pokemon Stadium for play. Since the original N64 loaded in GBC data through "transfer paks" attached to the controller, your emulator probably models this by having the save file associated with your controller. So, make sure to plug in the controllers you intend to use. (You may also want to setup your controller input settings if you haven't already).
+NOTE: The .sav file MUST have the first 6 slots of Box 1 filled with any Pokemon.
 
-For Project64, I point the emulator to the .sav file by selecting "Options", "Configure Controller Plugin", "Controller Pak", and then supply the path to GB Rom file and Sav file in the associated fields. If you're playing a two player game, you'll want each controller to point to a DIFFERENT .sav (and perhaps a different ROM too, I've only tested it with two independent ROMs). It's fine if the saves/ROMs are copies of each other, you just want separate files. 
+DISCLAIMER: MAKE A COPY OF THE SAVE FILE IF IT CONTAINS POKEMON YOU CARE ABOUT. The program works by OVERWRITING EXISTING POKEMON in Box 1, so obviously you don't want any Pokemon in the save file that you intend to keep.
 
-After pointing Project64 to the ROM and .sav files, start PkHex. Using "File" > "Open", open the first save file that you intend to edit your first team into. You should see the Pokemon storage boxes from the save. You can view a Pokemon by right clicking and selecting "View", and you can override the Pokemon in a current slot with the Pokemon you are currently viewing by right clicking that slot and selecting "Set". Ultimately we will be trying to edit the Pokemon into the "Party-Battle Box". For now, go ahead and open up the "Batch Editor" which allows us to enter in text commands that the program uses to setup the Pokemon for us. Open the Batch Editor by selecting "Tools" then "Data" then "Batch Editor". This will open a text box with some other options. We will simply be repeatedly pasting text into the text box and hitting "Run".
+Step 1: Emulator Setup 
+You need to give your N64 Emulator the location of your GBC ROM and .sav files you intend to load into Pokemon Stadium for play. Make sure to plug in any controllers you intend to use before starting the emulator. You should be able to share a keyboard for multiplayer games if desired. (Because of the way the original N64 worked, your emulator may associate GBC save files with your controller. You may also want to setup your controller input and N64 ROM folder settings if you haven't already).
 
-Now, start the main.py script in the src folder using python. So far it only supports command prompt ("terminal") use. The script contains several commands (see their description above, or the help command in terminal). You can generate two teams with teammake, then rerandom specific pokemon with teamedit if you'd like. 
+For Project64, I point the emulator to the .sav file by selecting "Options", "Configure Controller Plugin", "Controller Pak", and then supply the path to GB Rom file and Sav file in the associated fields. If you're playing a multiplayer game, you'll want each controller to have a DIFFERENT .sav (and maybe a different GBC ROM, but I'm not sure if that's necessary; I make a copy to be safe. It's fine if the saves/ROMs are copies of each other, you just want separate files).
 
-Next, we will copy the commands from our program into PkHex. Enter the "teamcopy" command into the terminal. Then, each time you press a key, the program will copy a bunch of text to your Windows clipboard. Simply Alt+Tab back to PkHex, paste the text into the text box, and hit Run (make sure there are no leading/trailing newlines). You should see a message saying something like "Modified 1/200 Files"; press OK to dismiss the message. Repeat this process by Alt+Tab'ing back to the terminal, pressing any key to copy another set of text commands, then Alt+Tab back and paste over what you currently have. Do this for all 6 members of the first team.
+After setting up your emulator, I suggest closing it, so that it will reload the GBC files after we edit them later with PkHex. (It may work regardless of being closed but that's my suggestion.)
 
+Step 2: Run this Program and Make/Load Teams
+After pointing your emulator to the ROM and .sav files, start the main.py script in this project's src folder using python. So far this project only supports a command prompt ("terminal") interface. The script contains several commands (see their description above, or the help command in terminal). You can generate two teams with teammake, then rerandom specific pokemon with teamedit if you'd like. You can also load previously saved teams from their file names as they appear in the main team folder.
+
+Step 3: Start PkHex, Open GBC .sav Files, and Open Batch Editor
+Next, start PkHex. Using "File" > "Open", open the first save file that you intend to edit your first team into. You should see the Pokemon storage boxes from the save. 
+
+(You can view a Pokemon by right clicking and selecting "View", and you can override the Pokemon in a current slot with the Pokemon you are currently viewing by right clicking that slot and selecting "Set". Ultimately we will be trying to edit the Pokemon into the "Party-Battle Box".)
+
+For now, open up the "Batch Editor" in PkHex which allows us to enter in text commands that PkHex interprets to setup our Pokemon. Open the Batch Editor by selecting "Tools" then "Data" then "Batch Editor". This will open a text box with some other buttons. We will simply be repeatedly pasting text into the text box and hitting "Run".
+
+Step 4: Paste Commands into PkHex
+Next, we will copy the commands from this program into PkHex. Enter the "teamcopy" command into the terminal. Then, each time you press a key, the program will copy a bunch of text to your Windows clipboard. Simply Alt+Tab back to PkHex, paste the text into the text box, and hit Run (make sure there are no leading/trailing newlines). If it worked, you should see a message saying something like "Modified 1/200 Files"; press OK to dismiss the message. Repeat this process by Alt+Tab'ing back to the terminal, pressing any key to copy another set of text commands, then Alt+Tab back and paste over what you currently have. Do this for all 6 members of the first team.
+
+If done correctly, this should cause the first 6 Pokemon in Box 1 to be the Pokemon you got from this program.
+
+Step 5: Move Pokemon from Box 1 to Party
 After that we have to move the Pokemon from Box 1 to the Party (I couldn't find a way for the commands to edit them into the party directly, but I bet there is a way). Go to the first Pokemon in Box 1, right click and select "View", then go to "Party-Battle Box", and then right click the first pokemon in the Box and select "Set" to replace it with your viewed Pokemon. Do this for all 6 pokemon on your team.
 
+Step 6: Export the .sav File
 To finish our changes to the GBC .sav, we need to go to "File" > "Export Sav" > "Export Main". Save the file with the same name as the save file you loaded. You should get a notice that the file already exists and that this will overwrite it; that's fine, hit OK.
 
-Now repeat the process by opening another save file in PkHex and load in the next 6 pokemon from team 2 into this second save file.
+Step 7: Repeat Steps 3-6 for the Second Team
+Now repeat the process by opening the second GBC .sav file in PkHex and load in the next 6 pokemon from team 2 into this second .sav file.
 
+Step 8: Play Pokemon Stadium 2!
 After all that, if you've set everything up right, you should be able to boot up Pokemon Stadium 2 in your emulator client, and the modified save files will be loaded in like GBC games in the N64's transfer pak.
 
 Enjoy, and please report any bugs you encounter! :)
+
+
+
+----- "Standard Ruleset" Restrictions -----
+
+The standard ruleset that is currently enforced automatically by the program is as follows:
+
+--- no banned pokemon
+
+	--- baby
+
+	--- legendaries
+
+	--- unevolved
+
+
+--- moveset restrictions
+
+	--- a Pokemon's learnable moves includes those it can learn from leveling, a prior evolution, TM/HM, Tutors, and even Special Events
+		--- Special Event moves may be flagged as "illegal" (pink text) in Pokemon Stadium 2, but are technically legal, though extremely rare IRL
+
+	--- Pokemon's first move is of its first type (if possible)
+
+	--- Pokemon's second move is of its second type (if possible)
+
+	--- "inferior" moves are replaced with learnable "superior" moves
+		--- i.e. if Charmander can learn Tackle and Strength, include Strength but not Tackle in its learnable move pool
+
+	--- no banned moves
+		--- most banned moves are banned because they are useless or nearly useless in combat (i.e. Teleport, Bind, Mud-Slap, Tackle, etc.)
+		--- most moves that depend on the user/enemy BEING sleep are banned
+			--- i.e. Dream Eater, Snore, Nightmare, Sleep Talk, etc.
+			--- ideally these moves are eventually unbanned and instead the program simply only grants these moves when an appropriate associated move is also present
+		--- most moves that depend on gender are banned
+			--- gender currently isn't working correctly so these moves are banned as a workaround
+		--- more controversial/opinionated bans
+			--- Double Team and Minimize 
+				--- evasion stacking needs a specific response, and with randomized moves, imo a Pokemon with high evasion may be practically unstoppable
+			--- Mud-Slap
+				--- too many Ground pokemon are randoming this as their required Ground move, and it makes them less threatening and the games longer and less exciting.
+				--- this move can have legitimate use and eventually should be unbanned as it is less problematic than evasion buffs (since you can simply swap out if your accuracy is debuffed too much)... but given our current implementation, its coming up too much. 
+			--- Rage
+				--- imo just not good and gets randomed too much since basically every Pokemon can learn it
+			--- False Swipe
+				--- leaves opponent with 1 HP... not the best... meant for catching pokemon
+			--- Return/Frustration
+				--- currently Pokemon are set to 0 happiness, making Return do minimum damage (sometimes <1 damage!) and Frustration does max
+					--- as a workaround... just do neither
+				--- even if Frustration is viable and enabled, the move would appear really often since practically every Pokemon can learn it
+
+	--- (not yet implemented) a pokemon must have at least one damaging move 
+		--- it's unclear if moves whose sole effect is to inflict Poison/Burn status should be considered "damaging" but I'd say no because they:
+			--- can't be used more than once on a target
+			--- don't deal direct damage
+			--- deal relatively low damage
+			--- can be removed via Rest or Heal Bell			
+			--- can be prevented with Safeguard
+			--- can be blocked by Poison/Steel types
+			--- can be removed with items or held items (if/when we use those)
+		--- technically speaking, I think moves that just Poison/Burn are considered status inflictions, even if the status itself does damage.
+		--- besides, technical considerations aside, if a Pokemon could only deal damage via Poison/Burn, it would not be much of a threat, and certainly not a Pokemon you'd want to have as your "last man standing". 
 
 
 
