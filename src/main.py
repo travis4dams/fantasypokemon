@@ -352,8 +352,10 @@ def squit(quit_msg = None):
 	# quit by sys.exit and display quit_msg if any
 	if(quit_msg != None and is_str(quit_msg)):
 		sys.exit(quit_msg)
-	else:
+	elif DEBUG:
 		sys.exit("Script ended by squit() call.")
+	else:
+		sys.exit()
 
 	# should not be reached
 	print("\nThe script did not quit successfully.")
