@@ -86,6 +86,9 @@ The standard ruleset is as follows:
 "Github Project Root Folder" - where this project is maintained
 - htps://github.com/travis4dams/fantasypokemon
 
+Python3 - necessary framework to run the scripts
+- https://www.python.org/download/releases/3.0/)
+
 "Pokepy" - main data source backend
 API 
 - https://pokeapi.github.io/pokepy/
@@ -97,6 +100,8 @@ GitHub
 - https://www.pj64-emu.com/download/project64-latest
 
 "PkHex" - program used to modify GBC Save files
+download
+- https://projectpokemon.org/home/files/file/1-pkhex/
 batch editor guides
 - https://github.com/kwsch/PKHeX/issues/516
 - https://projectpokemon.org/home/forums/topic/45398-using-pkhex-how-to-use-the-batch-editor-in-pkhex/

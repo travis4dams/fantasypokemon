@@ -72,17 +72,18 @@ default_legendary_dexnums_dict = {
 #TODO: double check this list and build dict... some of this overlaps w/ banned (esp baby) list
 
 default_underevolved_dexnums_list = [1,2,4,5,7,8,10,11,13,14,16,17,19,21,23,25,27,29,30,32,33,35,37,39,41,43,44,46,48,50,
-52,54,56,58,60,61,63,64,66,67,69,70,71,72,74,75,77,79,81,84,86,88,90,92,93,96,98,100,102,104,109,111,113,116,118,120,129,
+52,54,56,58,60,61,63,64,66,67,69,70,71,72,74,75,77,79,81,84,86,88,90,92,93,96,98,100,102,104,109,111,113,116,117,118,120,129,
 133,138,140,147,148,152,153,155,156,158,159,161,163,165,167,170,172,173,174,175,177,179,180,183,187,188,191,194,204,209,216,
 218,220,223,228,231,236,246,247]
 
 # list of banned move_ids
-default_banned_move_ids_list = [6,10,20,33,35,40,49,82,83,99,100,104,117,132,138,141,150,167,171,173,189,206,213,214,216,218,249,250]
+default_banned_move_ids_list = [3,6,10,20,33,35,40,49,82,83,99,100,104,117,132,138,141,150,167,171,173,189,206,213,214,216,218,249,250]
 
 # dict of banned move_ids mapped to a string of the move name
 #TODO: get move names in same format as pokepy
 #TODO: assert move_id<-> name mappings correspond w/ those of pokepy/PkHex
-default_banned_moves_dict = {6:"Pay Day",
+default_banned_moves_dict = {3:"Double Slap",
+6:"Pay Day",
 10:"Scratch",
 20:"Bind",
 33:"Tackle",
