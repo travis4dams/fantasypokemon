@@ -132,8 +132,6 @@ def init_vars():
 	end_timer()
 
 
-
-
 def get_teams_length():
 	global teams
 	return len(teams)

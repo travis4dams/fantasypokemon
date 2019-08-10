@@ -180,6 +180,9 @@
 		- but there might be nuanced differences in the consequences on game mechanics 
 			- (i.e. moves like Night Shade, moveset availability, Hidden Power, etc.)
 
+... up to here in scraping git issues as of 8.8.19 10:14 pm...
+
+
 ----- DEBUGGING -----
 
 AKA TESTING, CORNER CASES, CRASH HANDLING, etc
