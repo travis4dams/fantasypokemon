@@ -163,27 +163,32 @@ The standard ruleset that is currently enforced automatically by the program is 
 		--- more controversial/opinionated bans
 			--- Double Team and Minimize 
 				--- evasion stacking needs a specific response, and with randomized moves, imo a Pokemon with high evasion may be practically unstoppable
+				--- furthermore, Double Team is learnable by a large majority of Pokemon, making it frustratingly common for something that needs a niche response.
 			--- Mud-Slap
-				--- too many Ground Pokemon are randoming this as their required Ground move, and it makes them less threatening and the games longer and less exciting.
+				--- too many Ground Pokemon are randoming this as their required Ground move, and it makes them less threatening than if they had a more legit Ground move (i.e. Earthquake) 
+				--- furthermore, its preponderance and secondary effect led to more stall tactics, making games longer and less exciting.
 				--- this move can have legitimate use and eventually should be unbanned as it is less problematic than evasion buffs (since you can simply swap out if your accuracy is debuffed too much)... but given our current implementation, its coming up too much. 
 			--- Rage
 				--- imo just not good and gets randomed too much since basically every Pokemon can learn it
 			--- False Swipe
-				--- leaves opponent with 1 HP... not the best... meant for catching Pokemon
+				--- leaves opponent with 1 HP... not the best... meant for catching Pokemon, not fighting
 			--- Return/Frustration
 				--- currently Pokemon are set to 0 happiness, making Return do minimum damage (sometimes <1 damage!) and Frustration does max
 					--- as a workaround... just do neither
-				--- even if Frustration is viable and enabled, the move would appear really often since practically every Pokemon can learn it
+				--- even if Frustration is viable and enabled, the move would appear really often since practically every Pokemon can learn it, and might be worse than Strength (??)
 
 	--- (not yet implemented) a Pokemon must have at least one damaging move 
 		--- it's unclear if moves whose sole effect is to inflict Poison/Burn status should be considered "damaging" but I'd say no because they:
 			--- can't be used more than once on a target
+			--- can't be used on a target that already has another status effect
 			--- don't deal direct damage
 			--- deal relatively low damage
+				--- iirc, even Toxic's increasing damage is reset when its victim is swapped out and back in
 			--- can be removed via Rest or Heal Bell			
 			--- can be prevented with Safeguard
 			--- can be blocked by Poison/Steel types
 			--- can be removed with items or held items (if/when we use those)
+			--- cannot be enhanced by the attacker's stats
 		--- technically speaking, I think moves that just Poison/Burn are considered status inflictions, even if the status itself does damage.
 		--- besides, technical considerations aside, if a Pokemon could only deal damage via Poison/Burn, it would not be much of a threat, and certainly not a Pokemon you'd want to have as your "last man standing". 
 
@@ -191,7 +196,9 @@ The standard ruleset that is currently enforced automatically by the program is 
 
 ----- Future Plans -----
 
-This project was originally envisioned to be a part of a "fantasy Pokemon league" akin to a fantasy football league. This could mean many possible and fun things, but one conception involves picking (or randomizing) a "pool" of Pokemon, then successively battling with teams (subsets of your pool) of Pokemon with other teams from friends in the league, gaining experience and changing your team along the way, until perhaps a "season end" is reached and performance stats are compared.
+This project was originally envisioned to be a part of a "fantasy Pokemon league" akin to a fantasy football league. This could mean many possible and fun things, but one conception involves picking (or randomizing) a "pool" of Pokemon (which may change seasonally), then successively battling with teams (subsets of your pool) of Pokemon with other teams from friends in the league, gaining experience and changing your team along the way, until perhaps a "season end" is reached and performance stats are compared.
+
+Another idea for the league involves an alternative selection process. Instead of selecting from the "pool" of Pokemon, you have to catch them in a "Safari" zone kind of thing. This could just be a text-based adventure, or maybe a simple/crude GUI could be made. The safari zone might differ from season to season in terms of its layout, theme, pokemon, mechanics, etc.
 
 However, for right now, this project is just focused on creating interesting Level 100 teams for "one-off" Pokemon Stadium battles. Much of this functionality could extend to a "fantasy Pokemon" league though. Furthermore, extensive playtesting could inform us as to what factors lead to "interesting" or "competitive" battles, thus allowing us to develop a more balanced and enjoyable fantasy league later on. :)
 
