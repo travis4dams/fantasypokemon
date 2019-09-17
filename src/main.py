@@ -1065,6 +1065,102 @@ def output_team_file(cmd_lines, team_name):
 	print("Done.\n")
 	end_timer()
 
+# when a user inputs a string, dexnum, or team/slot number pair that is meant to reference a Pokemon in the teams list,
+# this function attempts to return that Pokemon
+# if the input is ambiguous, this function attempts to disambiguate it through prompts to the user
+#def 
+
+# view the pkmn stat dict
+# we want to use to_cmd and not str() here so we can print the attr names
+def pkmn_view(team_num, slot_num):
+	#TODO: asserts
+	p = teams[team_num][slot_num]
+	print(p.to_cmd(slot_num)) 
+
+def pkmn_edit(team_num, slot_num, stat_str, stat_val):
+
+	start_timer()
+
+	p = teams[team_num][slot_num]
+
+	stat_str = stat_str.lower().strip()
+
+	stat_val = int(stat_val)
+
+	if stat_str == "level":
+		p.set_level(stat_val)
+
+	elif stat_str == "ev_atk":
+		p.set_ev("atk", stat_val)
+
+	elif stat_str == "ev_def":
+		p.set_ev("def", stat_val)
+
+	elif stat_str == "ev_hp":
+		p.set_ev("hp", stat_val)
+
+	elif stat_str == "ev_spa":
+		p.set_ev("spa", stat_val)
+	
+	elif stat_str == "ev_spd":
+		p.set_ev("spd", stat_val)
+
+	elif stat_str == "ev_spe":	
+		p.set_ev("spe", stat_val)
+
+	elif stat_str == "iv_atk":
+		p.set_iv("atk", stat_val)
+
+	elif stat_str == "iv_def":
+		p.set_iv("def", stat_val)
+
+	elif stat_str == "iv_hp":
+		p.set_iv("hp", stat_val)
+
+	elif stat_str == "iv_spa":
+		p.set_iv("spa", stat_val)
+
+	elif stat_str == "iv_spd":
+		p.set_iv("spd", stat_val)
+
+	elif stat_str == "iv_spe":
+		p.set_iv("spe", stat_val)
+
+	elif stat_str == "friendship":
+		p.set_friendship(stat_val)
+
+	elif stat_str == "held_item_id":
+		p.set_held_item_id(stat_val)
+
+	elif stat_str == "OT_id":
+		p.set_OT_id(stat_val)
+
+	elif stat_str == "OT_name":
+		stat_val = str(stat_val)
+		p.set_OT_name(stat_val)
+
+	elif stat_str == "gender_id":
+		p.set_gender_id(stat_val)
+
+	elif stat_str == "move1":
+		p.set_move(1, Move(stat_val))
+
+	elif stat_str == "move2":
+		p.set_move(2, Move(stat_val))
+
+	elif stat_str == "move3":
+		p.set_move(3, Move(stat_val))
+
+	elif stat_str == "move4":
+		p.set_move(4, Move(stat_val))
+
+	elif stat_str == "nickname":
+		stat_val = str(stat_val)
+		p.set_nickname(stat_val)
+
+	end_timer()
+	return True
+
 # ----- END -----
 
 if __name__ == "__main__":

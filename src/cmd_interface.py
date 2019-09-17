@@ -1,4 +1,4 @@
-from main import get_team, get_teams_length, help, squit, ruleset_cmd, team_make, team_edit, team_show, team_copy, team_save, team_load
+from main import get_team, get_teams_length, help, squit, ruleset_cmd, team_make, team_edit, team_show, team_copy, team_save, team_load, pkmn_view, pkmn_edit
 from helper_functions import *
 
 class CmdInterface:
@@ -13,7 +13,7 @@ class CmdInterface:
 	def __init__(self):
 
 		# list of acceptable input commands
-		self.base_cmd_list = ['help','quit','ruleset','teammake','teamedit','teamshow','teamcopy','teamsave','teamload']
+		self.base_cmd_list = ['help','quit','ruleset','teammake','teamedit','teamshow','teamcopy','teamsave','teamload','pkmnview','pkmnedit']
 
 		# dict mapping acceptable input commands to their help descriptions
 		# this is used for "help" output
@@ -26,7 +26,9 @@ class CmdInterface:
 			'teamshow':'Prints the current teams as readable text to console. Typing \"teamshow <team_number>\" will display only that team.',
 			'teamcopy':'Copies the current teams as PkHex commands to clipboard, one Pokemon at a time.',
 			'teamsave':"Saves the current teams to the appropriate output file(s).",
-			'teamload':"Loads two given team files."
+			'teamload':"Loads two given team files.",
+			'pkmnview':'blah',
+			'pkmnedit':'foo'
 			}
 
 		#TODO: also map command names to functions here so its more succintly/clearly defined and makes checking setup easier
@@ -163,11 +165,20 @@ class CmdInterface:
 			team_edit(subcmds[0], subcmds[1], subcmds[2])
 
 		# teamload
+		#TODO: do we even need to check # of args here considering parse_subcmds should handle this?
 		elif base_cmd == 'teamload':
 			if(len(subcmds) == 2):
 				team_load(subcmds[0],subcmds[1])
 			else:
 				print("Bad input for teamload")
+
+		# pkmnview
+		elif base_cmd == 'pkmnview':
+			pkmn_view(subcmds[0],subcmds[1])	
+
+		# pkmnedit
+		elif base_cmd == 'pkmnedit':
+			pkmn_edit(subcmds[0],subcmds[1],subcmds[2],subcmds[3])	
 
 		# this else case should not be reached based on "if(base_cmd not in self.base_cmd_list)" check above
 		else:
@@ -293,6 +304,14 @@ class CmdInterface:
 				print("fname2 argument to teamload is not a string: " + str(fname2))
 				return None
 			return [fname1, fname2]
+
+		elif base_cmd == 'pkmnview':
+			# TODO: proper handling
+			return [int(input_cmd_list[1]), int(input_cmd_list[2])]
+
+		elif base_cmd == 'pkmnedit':
+			# TODO: proper handling
+			return [int(input_cmd_list[1]), int(input_cmd_list[2]), input_cmd_list[3], input_cmd_list[4]]
 
 		# shouldn't be reached based on structure of interpret_cmd()'s if-else structure
 		else:

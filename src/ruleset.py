@@ -72,7 +72,7 @@ default_legendary_dexnums_dict = {
 #TODO: double check this list and build dict... some of this overlaps w/ banned (esp baby) list
 
 default_underevolved_dexnums_list = [1,2,4,5,7,8,10,11,13,14,16,17,19,21,23,25,27,29,30,32,33,35,37,39,41,43,44,46,48,50,
-52,54,56,58,60,61,63,64,66,67,69,70,71,72,74,75,77,79,81,84,86,88,90,92,93,96,98,100,102,104,109,111,113,116,117,118,120,129,
+52,54,56,58,60,61,63,64,66,67,69,70,71,72,74,75,77,79,81,84,86,88,90,92,93,96,98,100,102,104,109,111,113,116,117,118,120,123,129,
 133,138,140,147,148,152,153,155,156,158,159,161,163,165,167,170,172,173,174,175,177,179,180,183,187,188,191,194,204,209,216,
 218,220,223,228,231,236,246,247]
 
@@ -214,7 +214,7 @@ class Ruleset:
 		self.inferior_moves_dict = default_inferior_moves_dict
 
 		# option request player and trainer names
-		self.request_pt_names = False
+		self.request_pt_names = True
 
 	# the rules that can be editted:
 	# # of legendary pokemon required
