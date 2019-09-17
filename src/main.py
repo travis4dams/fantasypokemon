@@ -63,7 +63,7 @@ default_fname2 = "pkmnteam_2_2019-07-17_22.48.59"
 # ----- MAIN FUNCTIONS -----
 
 # entry point of program
-#TODO: context handling for commands... i.e. teamshow w/ no made teams
+#TODO: context handling for commands... i.e. teamview w/ no made teams
 #TODO: simplify global variable and initialization design
 def main():
 
@@ -108,6 +108,8 @@ def alt_main():
 	#squit()
 	return
 
+# --- INITIALIZING FUNCTIONS ---
+
 # setups any relevantvariables from pglobals
 # ... I originally tried to have some of the asserts in pglobals.py but that was causing recursive import problems I think
 # init_vars() could be split into check_vars() which would only be called if(DEBUG)
@@ -131,6 +133,7 @@ def init_vars():
 
 	end_timer()
 
+# --- HELPER FUNCTIONS ---
 
 def get_teams_length():
 	global teams
@@ -141,6 +144,8 @@ def get_team(i):
 	global teams
 	assertd(i < len(teams))
 	return teams[i]
+
+# --- COMMAND FUNCTIONS ---
 
 # help function - called to list and desctibe commands
 def help(cmdintf):
@@ -271,7 +276,7 @@ def team_make(replace_team_num = None):
 
 		# save and show team after building it
 		team_save()
-		team_show()
+		team_view()
 
 	# based on input arguments, user wants to replace (aka "rebuild" or "rerandom") a specific team
 	#TODO: implement
@@ -288,129 +293,6 @@ def team_make(replace_team_num = None):
 	#printd("team_make end")
 
 	end_timer()
-
-#TODO: implement this
-def check_and_update_team(team):
-	return team
-
-	"""
-	# type_name_stats maps a type name (i.e. "Fire") to the a list with [<count>, <indices_list>]
-	# where count is the number of pokemon in the team that have that type
-	# and indices_list is a list of the indices where that type occurs in the team
-	#TODO: it might be easier to just track the positions within team for the pkmn of that type... count is redundant w/ len of that list
-	type_name_stats = {}
-
-	#printd(team)
-
-	#input()
-
-	for i in range(len(team)):
-		pkmn = team[i]
-		type_names = pkmn.get_type_names()
-		type_name1 = type_names[0]
-		# CHANGE - check that len(type_names) > 1 before fetching type_name2
-		type_name2 = type_names[1]
-		#TODO: assert=d is a type string, len != 0, etc
-		assertd(is_str(type_name1) and type_name1 != "None")
-		assertd(is_str(type_name2))
-		if(not type_name1 in type_name_stats):
-			type_name_stats[type_name1] = [1,[dexnum]]
-		else:
-			type_count = type_name_stats[type_name1][0]
-			existing_ids = type_name_stats[type_name1][1]
-			type_name_stats[type_name1][0] = type_count+1
-			existing_ids.append(dexnum)
-		if type_name2 != "None":
-			if not type_name2 in type_name_stats:
-				type_name_stats[type_name2] = [1,[dexnum]]
-			else:
-				type_count = type_name_stats[type_name2][0]
-				existing_ids = type_name_stats[type_name2][1]
-				type_name_stats[type_name2][0] = type_count+1
-				existing_ids.append(dexnum)
-
-	#printd(type_name_stats)
-
-	#input() 
-
-	# go through all the types that we have, if we have one more than twice, randomly reselect one of the "offenders"
-	# this "reslect" occurs by replacing team with a new list that excludes these pokemon, then repeats the loop
-	# rerandom_ids contains the dexnums of the pokemon to exclude from the new list
-	rerandom_ids = []
-	for type_name in type_name_stats:
-		# count is the number of times this stat has occured in the team
-		count = type_name_stats[type_name][0]
-		if(is_positive_int(ruleset_repeated_types) and count > ruleset_repeated_types):
-			type_ids = type_name_stats[type_name][1]
-			# i.e. if we have 4 fire types but are allowed no more than 2 of a type, excess_count = 2
-			# i.e. if we have 3 fire types but are allowed no more than 1 of a type, excess_count = 2
-			excess_count = count - ruleset_repeated_types
-			for rerandom_count in range(excess_count-1):
-				i = get_random_int(0,len(type_ids)-1)
-				rerandom_id = type_ids[i]
-				if not rerandom_id in rerandom_ids:
-					rerandom_ids.append(rerandom_id)
-				del type_ids[i]
-
-	if(len(rerandom_ids) == 0):
-		return team
-
-	#printd(rerandom_ids)
-
-	#input()
-
-	team_update = []
-	for pkmn in team:
-		dexnum = pkmn['dexnum']
-		if not dexnum in rerandom_ids:
-			team_update.append(pkmn)
-		#else:
-			#printd("dexnum " + str(dexnum) + " is getting rerolled.")
-
-	return team_update
-
-	printd(team_copy)
-
-	input()
-	"""
-
-#TODO: consistent use of player/trainer var/text/comment naming
-def input_player_and_team_names():
-
-	# catch all statement for calling code (rather than writing if statements everywhere else)
-	# if ruleset disallows requesting player and trainer names, just keep default values 
-	global rs
-	if not rs.request_pt_names:
-		return
-
-	# player1_name_input
-	player1_name_input = input_and_time("\nWho is player 1?\n")
-	player1_name_input_formatted = player1_name_input.strip()
-	if player1_name_input_formatted == "":
-		player1_name_input_formatted = default_player1_name
-		team1_name_input_formatted = default_team1_name
-	else:
-		# team1_name_input
-		team1_name_input = input_and_time("\n" + player1_name_input_formatted + ", do you have a name for your team?\n")
-		team1_name_input_formatted = team1_name_input.strip()
-		if team1_name_input_formatted == "":
-			team1_name_input_formatted = default_team1_name
-
-	# player2_name_input
-	player2_name_input = input_and_time("\nWho is player 2?\n")
-	player2_name_input_formatted = player2_name_input.strip()
-	if player2_name_input_formatted == "":
-		player2_name_input_formatted = default_player2_name
-		team2_name_input_formatted = default_team2_name
-	else:
-		# team2_name_input
-		team2_name_input = input_and_time("\n" + player2_name_input_formatted + ", do you have a name for your team?\n")
-		team2_name_input_formatted = team2_name_input.strip()
-		if team2_name_input_formatted == "":
-			team2_name_input_formatted = default_team2_name
-
-	global team_strs
-	team_strs = [player1_name_input_formatted, team1_name_input_formatted, player2_name_input_formatted, team2_name_input_formatted]
 
 # rerandom a specific pokemon on a specific team
 # note that team_num = 1 corresponds to teams[0], and slot_num = 1 corresponds to teams[team_num][0]
@@ -449,9 +331,9 @@ def team_edit(team_num, slot_num, is_legendary = False):
 	end_timer()
 
 # output the teams to console
-# TODO: rather than using a global var for team_strs, change team_show and team_make so it handles inputs w/ cmdintf correctly... 
+# TODO: rather than using a global var for team_strs, change team_view and team_make so it handles inputs w/ cmdintf correctly... 
 # TODO: ... also input handling and debugging asserts etc on team_strs here and elsewhere
-def team_show(team_num = None):
+def team_view(team_num = None):
 
 	start_timer()
 
@@ -628,7 +510,7 @@ def team_show(team_num = None):
 	
 	print(out_str)
 
-	print("\nteamshow complete.\n")
+	print("\nteamview complete.\n")
 
 	end_timer()
 
@@ -655,6 +537,313 @@ def team_save():
 	output_team_file(team1_cmd_strs, "1")
 	output_team_file(team2_cmd_strs, "2")
 	end_timer()
+
+# load the two teams, each from one of the two supplied output file(s)
+def team_load(fname1, fname2):
+	start_timer()
+	print("\nAttempting to load file named " + str(fname1) + " into team1...")
+	load_team_file(fname1,default_fname1)
+	print("\nDone loading team1.")
+	print("\nAttempting to load file named " + str(fname2) + " into team2...")
+	load_team_file(fname2,default_fname2)
+	print("\nDone loading team2.")
+	#TODO: should the team files we load already have the player and team names in them?
+	input_player_and_team_names()
+	print("\nteamload complete.\n")
+	end_timer()
+
+# view a given Pokemon's PkHex command string, effectively allowing the user to view a Pokemon's stats (and their stat labels)
+# we want to use to_cmd and not str() here so we also print the attr names
+#TODO: asserts
+def pkmn_view(team_num, slot_num, stat_name = None):
+	
+	# fetch pokemon
+	p = teams[team_num][slot_num]
+
+	# convert to PkHex command
+	out_cmd = p.to_cmd(slot_num)
+
+	# no specific stat requested - print all stats
+	if stat_name == None:
+		print("The PkHex command for " + p.get_species_name() + " is:")
+		print(out_cmd + '\n') 
+
+	# a specific stat was requested - try to find it in out_cmd and print the associated value
+	else:
+
+		# user requested to view the legal learnable moves for this pokemon
+		if stat_name == "moveset":
+			legal_learnable_moves = p.get_learnable_moves()[1]
+			print("\nThe legal learnable moves for " + p.get_species_name() + " are:")
+			for legal_learnable_move in legal_learnable_moves:
+				print(legal_learnable_move)
+			print("\n")
+			return
+
+		# TODO: this case, to view all 4 moves, instead of just a specific 1
+		if stat_name == "moves":
+			return
+
+		# default case
+		out_cmd_split = out_cmd.split('\n')
+		found_stat = False
+		for out_cmd_line in out_cmd_split:
+			if stat_name in out_cmd_line:
+				stat_name_index = out_cmd_line.index(stat_name)
+				try:
+					stat_val = out_cmd_line[stat_name_index+len(stat_name)+1:len(out_cmd_line)+1]
+				except:
+					print("Bad stat_name to pkmn_view.")
+					return
+				found_stat = True
+		if found_stat:
+			print("\nThe value of " + stat_name + " for " + p.get_species_name() + " is: " + str(stat_val) + "\n")
+		else:	
+			print("\nCould not find stat named \"" + stat_name + "\"\n")
+	
+			
+
+		
+# edit the stat value of a given pokemon
+# TODO: check stat_str is a recognized stat, and stat_val is a permissible value
+def pkmn_edit(team_num, slot_num, stat_str, stat_val):
+
+	start_timer()
+
+	p = teams[team_num][slot_num]
+
+	stat_str = stat_str.lower().strip()
+
+	rand_flag = "random"
+
+	if is_str(stat_val): 
+		stat_val = stat_val.lower().strip()
+		if stat_val == rand_flag or stat_val == "r" or stat_val == "rand" or stat_val == "random":
+			stat_val = rand_flag
+		else:
+			stat_val = int(stat_val)
+
+	if stat_str == "level":
+		if stat_val != rand_flag:
+			p.set_level(stat_val)
+
+	elif stat_str == "ev_atk":
+		if stat_val != rand_flag:
+			p.set_ev("atk", stat_val)
+
+	elif stat_str == "ev_def":
+		if stat_val != rand_flag:
+			p.set_ev("def", stat_val)
+
+	elif stat_str == "ev_hp":
+		if stat_val != rand_flag:
+			p.set_ev("hp", stat_val)
+
+	elif stat_str == "ev_spa":
+		if stat_val != rand_flag:
+			p.set_ev("spa", stat_val)
+	
+	elif stat_str == "ev_spd":
+		if stat_val != rand_flag:
+			p.set_ev("spd", stat_val)
+
+	elif stat_str == "ev_spe":	
+		if stat_val != rand_flag:
+			p.set_ev("spe", stat_val)
+
+	elif stat_str == "iv_atk":
+		if stat_val != rand_flag:
+			p.set_iv("atk", stat_val)
+
+	elif stat_str == "iv_def":
+		if stat_val != rand_flag:
+			p.set_iv("def", stat_val)
+
+	elif stat_str == "iv_hp":
+		if stat_val != rand_flag:
+			p.set_iv("hp", stat_val)
+
+	elif stat_str == "iv_spa":
+		if stat_val != rand_flag:
+			p.set_iv("spa", stat_val)
+
+	elif stat_str == "iv_spd":
+		if stat_val != rand_flag:
+			p.set_iv("spd", stat_val)
+
+	elif stat_str == "iv_spe":
+		if stat_val != rand_flag:
+			p.set_iv("spe", stat_val)
+
+	elif stat_str == "friendship":
+		if stat_val != rand_flag:
+			p.set_friendship(stat_val)
+
+	elif stat_str == "held_item_id":
+		if stat_val != rand_flag:
+			p.set_held_item_id(stat_val)
+
+	elif stat_str == "OT_id":
+		if stat_val != rand_flag:
+			p.set_OT_id(stat_val)
+
+	elif stat_str == "OT_name":
+		if stat_val != rand_flag:
+			stat_val = str(stat_val)
+			p.set_OT_name(stat_val)
+
+	elif stat_str == "gender_id":
+		if stat_val != rand_flag:
+			p.set_gender_id(stat_val)
+
+	elif stat_str == "move1":
+		if stat_val != rand_flag:
+			p.set_move(1, Move(stat_val))
+
+	elif stat_str == "move2":
+		if stat_val != rand_flag:
+			p.set_move(2, Move(stat_val))
+
+	elif stat_str == "move3":
+		if stat_val != rand_flag:
+			p.set_move(3, Move(stat_val))
+
+	elif stat_str == "move4":
+		if stat_val != rand_flag:
+			p.set_move(4, Move(stat_val))
+
+	elif stat_str == "nickname":
+		if stat_val != rand_flag:
+			stat_val = str(stat_val)
+			p.set_nickname(stat_val)
+
+	end_timer()
+	return True
+
+# --- COMMAND HELPER FUNCTIONS ---
+
+#TODO: implement this
+def check_and_update_team(team):
+	return team
+
+	"""
+	# type_name_stats maps a type name (i.e. "Fire") to the a list with [<count>, <indices_list>]
+	# where count is the number of pokemon in the team that have that type
+	# and indices_list is a list of the indices where that type occurs in the team
+	#TODO: it might be easier to just track the positions within team for the pkmn of that type... count is redundant w/ len of that list
+	type_name_stats = {}
+
+	#printd(team)
+
+	#input()
+
+	for i in range(len(team)):
+		pkmn = team[i]
+		type_names = pkmn.get_type_names()
+		type_name1 = type_names[0]
+		# CHANGE - check that len(type_names) > 1 before fetching type_name2
+		type_name2 = type_names[1]
+		#TODO: assert=d is a type string, len != 0, etc
+		assertd(is_str(type_name1) and type_name1 != "None")
+		assertd(is_str(type_name2))
+		if(not type_name1 in type_name_stats):
+			type_name_stats[type_name1] = [1,[dexnum]]
+		else:
+			type_count = type_name_stats[type_name1][0]
+			existing_ids = type_name_stats[type_name1][1]
+			type_name_stats[type_name1][0] = type_count+1
+			existing_ids.append(dexnum)
+		if type_name2 != "None":
+			if not type_name2 in type_name_stats:
+				type_name_stats[type_name2] = [1,[dexnum]]
+			else:
+				type_count = type_name_stats[type_name2][0]
+				existing_ids = type_name_stats[type_name2][1]
+				type_name_stats[type_name2][0] = type_count+1
+				existing_ids.append(dexnum)
+
+	#printd(type_name_stats)
+
+	#input() 
+
+	# go through all the types that we have, if we have one more than twice, randomly reselect one of the "offenders"
+	# this "reslect" occurs by replacing team with a new list that excludes these pokemon, then repeats the loop
+	# rerandom_ids contains the dexnums of the pokemon to exclude from the new list
+	rerandom_ids = []
+	for type_name in type_name_stats:
+		# count is the number of times this stat has occured in the team
+		count = type_name_stats[type_name][0]
+		if(is_positive_int(ruleset_repeated_types) and count > ruleset_repeated_types):
+			type_ids = type_name_stats[type_name][1]
+			# i.e. if we have 4 fire types but are allowed no more than 2 of a type, excess_count = 2
+			# i.e. if we have 3 fire types but are allowed no more than 1 of a type, excess_count = 2
+			excess_count = count - ruleset_repeated_types
+			for rerandom_count in range(excess_count-1):
+				i = get_random_int(0,len(type_ids)-1)
+				rerandom_id = type_ids[i]
+				if not rerandom_id in rerandom_ids:
+					rerandom_ids.append(rerandom_id)
+				del type_ids[i]
+
+	if(len(rerandom_ids) == 0):
+		return team
+
+	#printd(rerandom_ids)
+
+	#input()
+
+	team_update = []
+	for pkmn in team:
+		dexnum = pkmn['dexnum']
+		if not dexnum in rerandom_ids:
+			team_update.append(pkmn)
+		#else:
+			#printd("dexnum " + str(dexnum) + " is getting rerolled.")
+
+	return team_update
+
+	printd(team_copy)
+
+	input()
+	"""
+
+#TODO: consistent use of player/trainer var/text/comment naming
+def input_player_and_team_names():
+
+	# catch all statement for calling code (rather than writing if statements everywhere else)
+	# if ruleset disallows requesting player and trainer names, just keep default values 
+	global rs
+	if not rs.request_pt_names:
+		return
+
+	# player1_name_input
+	player1_name_input = input_and_time("\nWho is player 1?\n")
+	player1_name_input_formatted = player1_name_input.strip()
+	if player1_name_input_formatted == "":
+		player1_name_input_formatted = default_player1_name
+		team1_name_input_formatted = default_team1_name
+	else:
+		# team1_name_input
+		team1_name_input = input_and_time("\n" + player1_name_input_formatted + ", do you have a name for your team?\n")
+		team1_name_input_formatted = team1_name_input.strip()
+		if team1_name_input_formatted == "":
+			team1_name_input_formatted = default_team1_name
+
+	# player2_name_input
+	player2_name_input = input_and_time("\nWho is player 2?\n")
+	player2_name_input_formatted = player2_name_input.strip()
+	if player2_name_input_formatted == "":
+		player2_name_input_formatted = default_player2_name
+		team2_name_input_formatted = default_team2_name
+	else:
+		# team2_name_input
+		team2_name_input = input_and_time("\n" + player2_name_input_formatted + ", do you have a name for your team?\n")
+		team2_name_input_formatted = team2_name_input.strip()
+		if team2_name_input_formatted == "":
+			team2_name_input_formatted = default_team2_name
+
+	global team_strs
+	team_strs = [player1_name_input_formatted, team1_name_input_formatted, player2_name_input_formatted, team2_name_input_formatted]
 
 # returns two lists of PkHex command strings, one for team1 and one for team2
 # if copy_and_halt, the PkHex command for each pokemon will copy to the user's clipboard and wait for input before proceeding
@@ -690,7 +879,7 @@ def get_cmd_strs(copy_and_halt = True):
 				print("Entering anything besides \"quit\" will copy the command for pokemon #" + str(pkmn_num))
 				proceed = input().replace(" ","").lower()
 				if proceed == "quit":
-					print("Quitting teamshow.")
+					print("Quitting teamview.")
 					return
 				print("Copying command to keyboard...")
 				copy_str_to_clipboard(cmd_str)
@@ -703,20 +892,6 @@ def get_cmd_strs(copy_and_halt = True):
 	end_timer()
 
 	return team1_cmd_strs, team2_cmd_strs
-
-# load the two teams, each from one of the two supplied output file(s)
-def team_load(fname1, fname2):
-	start_timer()
-	print("\nAttempting to load file named " + str(fname1) + " into team1...")
-	load_team_file(fname1,default_fname1)
-	print("\nDone loading team1.")
-	print("\nAttempting to load file named " + str(fname2) + " into team2...")
-	load_team_file(fname2,default_fname2)
-	print("\nDone loading team2.")
-	#TODO: should the team files we load already have the player and team names in them?
-	input_player_and_team_names()
-	print("\nteamload complete.\n")
-	end_timer()
 
 # helper function for team_load()
 # attempts to load fname, or backup_fname if loading fname fails (backup_fname is usually a default fname)
@@ -1069,97 +1244,6 @@ def output_team_file(cmd_lines, team_name):
 # this function attempts to return that Pokemon
 # if the input is ambiguous, this function attempts to disambiguate it through prompts to the user
 #def 
-
-# view the pkmn stat dict
-# we want to use to_cmd and not str() here so we can print the attr names
-def pkmn_view(team_num, slot_num):
-	#TODO: asserts
-	p = teams[team_num][slot_num]
-	print(p.to_cmd(slot_num)) 
-
-def pkmn_edit(team_num, slot_num, stat_str, stat_val):
-
-	start_timer()
-
-	p = teams[team_num][slot_num]
-
-	stat_str = stat_str.lower().strip()
-
-	stat_val = int(stat_val)
-
-	if stat_str == "level":
-		p.set_level(stat_val)
-
-	elif stat_str == "ev_atk":
-		p.set_ev("atk", stat_val)
-
-	elif stat_str == "ev_def":
-		p.set_ev("def", stat_val)
-
-	elif stat_str == "ev_hp":
-		p.set_ev("hp", stat_val)
-
-	elif stat_str == "ev_spa":
-		p.set_ev("spa", stat_val)
-	
-	elif stat_str == "ev_spd":
-		p.set_ev("spd", stat_val)
-
-	elif stat_str == "ev_spe":	
-		p.set_ev("spe", stat_val)
-
-	elif stat_str == "iv_atk":
-		p.set_iv("atk", stat_val)
-
-	elif stat_str == "iv_def":
-		p.set_iv("def", stat_val)
-
-	elif stat_str == "iv_hp":
-		p.set_iv("hp", stat_val)
-
-	elif stat_str == "iv_spa":
-		p.set_iv("spa", stat_val)
-
-	elif stat_str == "iv_spd":
-		p.set_iv("spd", stat_val)
-
-	elif stat_str == "iv_spe":
-		p.set_iv("spe", stat_val)
-
-	elif stat_str == "friendship":
-		p.set_friendship(stat_val)
-
-	elif stat_str == "held_item_id":
-		p.set_held_item_id(stat_val)
-
-	elif stat_str == "OT_id":
-		p.set_OT_id(stat_val)
-
-	elif stat_str == "OT_name":
-		stat_val = str(stat_val)
-		p.set_OT_name(stat_val)
-
-	elif stat_str == "gender_id":
-		p.set_gender_id(stat_val)
-
-	elif stat_str == "move1":
-		p.set_move(1, Move(stat_val))
-
-	elif stat_str == "move2":
-		p.set_move(2, Move(stat_val))
-
-	elif stat_str == "move3":
-		p.set_move(3, Move(stat_val))
-
-	elif stat_str == "move4":
-		p.set_move(4, Move(stat_val))
-
-	elif stat_str == "nickname":
-		stat_val = str(stat_val)
-		p.set_nickname(stat_val)
-
-	end_timer()
-	return True
 
 # ----- END -----
 

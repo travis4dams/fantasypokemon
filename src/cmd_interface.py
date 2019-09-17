@@ -1,4 +1,4 @@
-from main import get_team, get_teams_length, help, squit, ruleset_cmd, team_make, team_edit, team_show, team_copy, team_save, team_load, pkmn_view, pkmn_edit
+from main import get_team, get_teams_length, help, squit, ruleset_cmd, team_make, team_edit, team_view, team_copy, team_save, team_load, pkmn_view, pkmn_edit
 from helper_functions import *
 
 class CmdInterface:
@@ -13,7 +13,7 @@ class CmdInterface:
 	def __init__(self):
 
 		# list of acceptable input commands
-		self.base_cmd_list = ['help','quit','ruleset','teammake','teamedit','teamshow','teamcopy','teamsave','teamload','pkmnview','pkmnedit']
+		self.base_cmd_list = ['help','quit','ruleset','teammake','teamedit','teamview','teamcopy','teamsave','teamload','pkmnview','pkmnedit']
 
 		# dict mapping acceptable input commands to their help descriptions
 		# this is used for "help" output
@@ -23,12 +23,13 @@ class CmdInterface:
 			'ruleset':'Describes the current ruleset. Typing \"ruleset edit <rule_number> <value>\" will edit that rule to that value if permissible.', 
 			'teammake':'Creates the number of teams according the ruleset. Entering \"teammake <team_number>\" will replace that team with a new team.', 
 			'teamedit':'Edits a specific Pokemon. Type \"teamedit <team_number> <slot_number>\" to reselect that pokemon.', 
-			'teamshow':'Prints the current teams as readable text to console. Typing \"teamshow <team_number>\" will display only that team.',
+			'teamview':'Prints the current teams as readable text to console. Typing \"teamview <team_number>\" will display only that team.',
 			'teamcopy':'Copies the current teams as PkHex commands to clipboard, one Pokemon at a time.',
-			'teamsave':"Saves the current teams to the appropriate output file(s).",
-			'teamload':"Loads two given team files.",
-			'pkmnview':'blah',
-			'pkmnedit':'foo'
+			'teamsave':'Saves the current teams to the appropriate output file(s).',
+			'teamload':'Loads two given team files.',
+			'pkmnview':'Prints the PkHex commands for the given pokemon, as a means of listing the stat names and their attributes. ' +
+				'Use the following syntax: pkmnview <team_num> <slot_num> <stat_name> <stat_value>',
+			'pkmnedit':'Alters the stat of a given Pokemon. Use the following syntax: pkmedit <team_num> <slot_num> <stat_name> <stat_value>'
 			}
 
 		#TODO: also map command names to functions here so its more succintly/clearly defined and makes checking setup easier
@@ -94,7 +95,7 @@ class CmdInterface:
 	def format_cmd(self, full_cmd):
 		assertd(is_str(full_cmd),
 			"Bad full_cmd to format_cmd(). Type: " + get_class_name(full_cmd) + " str: " + str(full_cmd))
-		return full_cmd.lower().strip()
+		return full_cmd.strip()
 
 	# attempts to parse formatted string cmd and call appropriate functions
 	# stuff like https://tinyurl.com/yynealaa might be useful here
@@ -103,7 +104,7 @@ class CmdInterface:
 			"Bad formatted_cmd to interpret_cmd(). Type: " + get_class_name(formatted_cmd) + " str: " + str(formatted_cmd))
 
 		# list of command and subcommand(s) (if any)
-		input_cmd_list = formatted_cmd.lower().split(' ')
+		input_cmd_list = formatted_cmd.split(' ')
 
 		# base_cmd is the "root" command string without any arguments (i.e. "make" in "make 1" but not the arguments like "1")
 		base_cmd = input_cmd_list[0]
@@ -138,12 +139,12 @@ class CmdInterface:
 		elif base_cmd == 'ruleset':
 			ruleset_cmd()
 
-		# teamshow
-		elif base_cmd == 'teamshow':
+		# teamview
+		elif base_cmd == 'teamview':
 			if(len(subcmds)>0):
-				team_show(subcmds[0])
+				team_view(subcmds[0])
 			else:
-				team_show()
+				team_view()
 
 		# teamcopy
 		elif base_cmd == 'teamcopy':
@@ -174,7 +175,10 @@ class CmdInterface:
 
 		# pkmnview
 		elif base_cmd == 'pkmnview':
-			pkmn_view(subcmds[0],subcmds[1])	
+			if len(subcmds) == 2:			
+				pkmn_view(subcmds[0],subcmds[1])	
+			elif len(input_cmd_list) == 4:
+				pkmn_view(subcmds[0],subcmds[1],subcmds[2]) 				
 
 		# pkmnedit
 		elif base_cmd == 'pkmnedit':
@@ -213,19 +217,19 @@ class CmdInterface:
 		elif base_cmd == 'ruleset':
 			return []
 
-		# teamshow
-		elif base_cmd == 'teamshow':
-			# if no optional arguments supplied by user, pass no arguments to teamshow
+		# teamview
+		elif base_cmd == 'teamview':
+			# if no optional arguments supplied by user, pass no arguments to teamview
 			if len(input_cmd_list) <= 1:
 				return []
 			# subcmd exists, check that its an int
 			subcmd = input_cmd_list[1]
 			if not is_positive_int(subcmd):
-				print("Team number argument to teamshow is not a positive integer: " + str(subcmd))
+				print("Team number argument to teamview is not a positive integer: " + str(subcmd))
 				return None
 			# subcmd is a positive int, check if its in range
 			if subcmd > get_teams_length():
-				print("Team number argument to teamshow out of range: " + str(subcmd) + 
+				print("Team number argument to teamview out of range: " + str(subcmd) + 
 					". There are currently " + str(get_teams_length()) + " teams.")
 				return None
 			# subcmd is good, return it in a list
@@ -305,12 +309,15 @@ class CmdInterface:
 				return None
 			return [fname1, fname2]
 
+		# TODO: proper input handling
 		elif base_cmd == 'pkmnview':
-			# TODO: proper handling
-			return [int(input_cmd_list[1]), int(input_cmd_list[2])]
+			if len(input_cmd_list) == 3:			
+				return [int(input_cmd_list[1]), int(input_cmd_list[2])]
+			elif len(input_cmd_list) == 4:
+				return [int(input_cmd_list[1]), int(input_cmd_list[2]), input_cmd_list[3]]
 
+		# TODO: proper input handling
 		elif base_cmd == 'pkmnedit':
-			# TODO: proper handling
 			return [int(input_cmd_list[1]), int(input_cmd_list[2]), input_cmd_list[3], input_cmd_list[4]]
 
 		# shouldn't be reached based on structure of interpret_cmd()'s if-else structure

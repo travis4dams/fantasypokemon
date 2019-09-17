@@ -81,6 +81,10 @@ METRICS RECORDED:
 		we might be able to 
 		i might have hinted at this elsewhere but basically the lowest level timed function may be accurate but because of timer overhead the parent function's time
 		will include the overhead time associated with timing that lowest level (child) function
+
+#TODO: add an option to time functions by adding their name at some point in some test function; 
+#	   rather than having to put start_timer and end_timer in the function, making it less readable
+
 """
 
 # ----- imports -----
