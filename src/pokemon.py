@@ -67,6 +67,7 @@ class Pokemon:
 	max_iv = 15
 	max_fv = 255
 	max_OT_id = 65535
+	max_hi_id = 254
 	max_gender_id = 2
 	max_nickname_length = 10 # this is generation dependent
 
@@ -1083,7 +1084,7 @@ def is_legal_friendship(fv):
 
 # TODO: implement max range
 def is_legal_held_item_id(hi_id):
-	return is_int(hi_id) and hi_id >= 0
+	return is_positive_int(hi_id) and hi_id <= Pokemon.max_hi_id
 
 def is_legal_OT_id(OT_id):
 	return is_int(OT_id) and OT_id >= 0 and OT_id <= Pokemon.max_OT_id

@@ -558,7 +558,7 @@ def team_load(fname1, fname2):
 def pkmn_view(team_num, slot_num, stat_name = None):
 	
 	# fetch pokemon
-	p = teams[team_num][slot_num]
+	p = teams[team_num-1][slot_num-1]
 
 	# convert to PkHex command
 	out_cmd = p.to_cmd(slot_num)
@@ -571,8 +571,10 @@ def pkmn_view(team_num, slot_num, stat_name = None):
 	# a specific stat was requested - try to find it in out_cmd and print the associated value
 	else:
 
+		stat_name = stat_name.strip().title()
+
 		# user requested to view the legal learnable moves for this pokemon
-		if stat_name == "moveset":
+		if stat_name == "Moveset":
 			legal_learnable_moves = p.get_learnable_moves()[1]
 			print("\nThe legal learnable moves for " + p.get_species_name() + " are:")
 			for legal_learnable_move in legal_learnable_moves:
@@ -581,7 +583,7 @@ def pkmn_view(team_num, slot_num, stat_name = None):
 			return
 
 		# TODO: this case, to view all 4 moves, instead of just a specific 1
-		if stat_name == "moves":
+		if stat_name == "Moves":
 			return
 
 		# default case
@@ -597,7 +599,7 @@ def pkmn_view(team_num, slot_num, stat_name = None):
 					return
 				found_stat = True
 		if found_stat:
-			print("\nThe value of " + stat_name + " for " + p.get_species_name() + " is: " + str(stat_val) + "\n")
+			print("\nThe value of " + stat_name + " for " + p.get_species_name() + " is " + str(stat_val) + "\n")
 		else:	
 			print("\nCould not find stat named \"" + stat_name + "\"\n")
 	
@@ -606,116 +608,233 @@ def pkmn_view(team_num, slot_num, stat_name = None):
 		
 # edit the stat value of a given pokemon
 # TODO: check stat_str is a recognized stat, and stat_val is a permissible value
+#TODO: if stat_val is a string, we want to allow spaces, i.e. "pkmnedit 1 1 nickname the batman" should work, but it just nicknames to "the"
 def pkmn_edit(team_num, slot_num, stat_str, stat_val):
 
 	start_timer()
 
-	p = teams[team_num][slot_num]
+	p = teams[team_num-1][slot_num-1]
 
 	stat_str = stat_str.lower().strip()
 
 	rand_flag = "random"
 
+	move_used = False
+
 	if is_str(stat_val): 
 		stat_val = stat_val.lower().strip()
 		if stat_val == rand_flag or stat_val == "r" or stat_val == "rand" or stat_val == "random":
 			stat_val = rand_flag
-		else:
+		try:
 			stat_val = int(stat_val)
+		except:
+			pass
 
 	if stat_str == "level":
 		if stat_val != rand_flag:
+			p.set_level(stat_val)
+		else:
+			stat_val = get_random_int(1,Pokemon.max_level)
 			p.set_level(stat_val)
 
 	elif stat_str == "ev_atk":
 		if stat_val != rand_flag:
 			p.set_ev("atk", stat_val)
+		else:
+			stat_val = get_random_int(1,Pokemon.max_ev)
+			p.set_ev("atk", stat_val)
 
 	elif stat_str == "ev_def":
 		if stat_val != rand_flag:
+			p.set_ev("def", stat_val)
+		else:
+			stat_val = get_random_int(1,Pokemon.max_ev)
 			p.set_ev("def", stat_val)
 
 	elif stat_str == "ev_hp":
 		if stat_val != rand_flag:
 			p.set_ev("hp", stat_val)
+		else:
+			stat_val = get_random_int(1,Pokemon.max_ev)
+			p.set_ev("hp", stat_val)
 
 	elif stat_str == "ev_spa":
 		if stat_val != rand_flag:
+			p.set_ev("spa", stat_val)
+		else:
+			stat_val = get_random_int(1,Pokemon.max_ev)
 			p.set_ev("spa", stat_val)
 	
 	elif stat_str == "ev_spd":
 		if stat_val != rand_flag:
 			p.set_ev("spd", stat_val)
+		else:
+			stat_val = get_random_int(1,Pokemon.max_ev)
+			p.set_ev("spd", stat_val)
 
 	elif stat_str == "ev_spe":	
 		if stat_val != rand_flag:
+			p.set_ev("spe", stat_val)
+		else:
+			stat_val = get_random_int(1,Pokemon.max_ev)
 			p.set_ev("spe", stat_val)
 
 	elif stat_str == "iv_atk":
 		if stat_val != rand_flag:
 			p.set_iv("atk", stat_val)
+		else:
+			stat_val = get_random_int(1,Pokemon.max_iv)
+			p.set_iv("atk", stat_val)
 
 	elif stat_str == "iv_def":
 		if stat_val != rand_flag:
+			p.set_iv("def", stat_val)
+		else:
+			stat_val = get_random_int(1,Pokemon.max_iv)
 			p.set_iv("def", stat_val)
 
 	elif stat_str == "iv_hp":
 		if stat_val != rand_flag:
 			p.set_iv("hp", stat_val)
+		else:
+			stat_val = get_random_int(1,Pokemon.max_iv)
+			p.set_iv("hp", stat_val)
 
 	elif stat_str == "iv_spa":
 		if stat_val != rand_flag:
+			p.set_iv("spa", stat_val)
+		else:
+			stat_val = get_random_int(1,Pokemon.max_iv)
 			p.set_iv("spa", stat_val)
 
 	elif stat_str == "iv_spd":
 		if stat_val != rand_flag:
 			p.set_iv("spd", stat_val)
+		else:
+			stat_val = get_random_int(1,Pokemon.max_iv)
+			p.set_iv("spd", stat_val)
 
 	elif stat_str == "iv_spe":
 		if stat_val != rand_flag:
+			p.set_iv("spe", stat_val)
+		else:
+			stat_val = get_random_int(1,Pokemon.max_iv)
 			p.set_iv("spe", stat_val)
 
 	elif stat_str == "friendship":
 		if stat_val != rand_flag:
 			p.set_friendship(stat_val)
+		else:
+			stat_val = get_random_int(0,Pokemon.max_fv)
+			p.set_friendship(stat_val)
 
 	elif stat_str == "held_item_id":
 		if stat_val != rand_flag:
+			p.set_held_item_id(stat_val)
+		else:
+			stat_val = get_random_int(1,254)
 			p.set_held_item_id(stat_val)
 
 	elif stat_str == "OT_id":
 		if stat_val != rand_flag:
 			p.set_OT_id(stat_val)
+		else:
+			stat_val = get_random_int(0,Pokemon.max_OT_id)
+			p.set_friendship(stat_val)
 
 	elif stat_str == "OT_name":
 		if stat_val != rand_flag:
 			stat_val = str(stat_val)
 			p.set_OT_name(stat_val)
+		else:
+			stat_val = "blah"
+			p.set_OT_name(stat_val)
 
 	elif stat_str == "gender_id":
 		if stat_val != rand_flag:
 			p.set_gender_id(stat_val)
+		else:
+			stat_val = get_random_int(1,2)
+			p.set_gender_id(stat_val)
 
+	#TODO: prevent this from rerandoming a move it already has?
+	#TODO: accept move names and not just move ids
 	elif stat_str == "move1":
+		move_used = True
 		if stat_val != rand_flag:
-			p.set_move(1, Move(stat_val))
+			new_move = Move(stat_val)
+			p.set_move(1, new_move)
+		else:
+			legal_learnable_moves = list(p.get_learnable_moves()[1])
+			new_move = legal_learnable_moves[get_random_int(0,len(legal_learnable_moves)-1)]
+			p.set_move(1, new_move)
 
 	elif stat_str == "move2":
+		move_used = True
 		if stat_val != rand_flag:
-			p.set_move(2, Move(stat_val))
+			new_move = Move(stat_val)
+			p.set_move(2, new_move)
+		else:
+			legal_learnable_moves = list(p.get_learnable_moves()[1])
+			new_move = legal_learnable_moves[get_random_int(0,len(legal_learnable_moves)-1)]
+			p.set_move(2, new_move)
 
 	elif stat_str == "move3":
+		move_used = True
 		if stat_val != rand_flag:
-			p.set_move(3, Move(stat_val))
+			new_move = Move(stat_val)
+			p.set_move(3, new_move)
+		else:
+			legal_learnable_moves = list(p.get_learnable_moves()[1])
+			new_move = legal_learnable_moves[get_random_int(0,len(legal_learnable_moves)-1)]
+			p.set_move(3, new_move)
 
 	elif stat_str == "move4":
+		move_used = True
 		if stat_val != rand_flag:
-			p.set_move(4, Move(stat_val))
+			new_move = Move(stat_val)
+			p.set_move(4, new_move)
+		else:
+			legal_learnable_moves = list(p.get_learnable_moves()[1])
+			new_move = legal_learnable_moves[get_random_int(0,len(legal_learnable_moves)-1)]
+			p.set_move(4, new_move)
+
+	# rerandom this pokemon's entire moveset
+	# currently does not accept a user-inputted (aka non-random) value and only rerandoms
+	#TODO: allow user to input a list of moves
+	elif stat_str == "moves":
+		move_used = True
+		new_moves = []
+		legal_learnable_moves = list(p.get_learnable_moves()[1])
+		for i in range(1,5):
+			new_move = legal_learnable_moves[get_random_int(0,len(legal_learnable_moves)-1)]
+			new_moves.append(new_move)
+			legal_learnable_moves.remove(new_move)
+			p.set_move(i, new_move)
 
 	elif stat_str == "nickname":
 		if stat_val != rand_flag:
 			stat_val = str(stat_val)
 			p.set_nickname(stat_val)
+		else:
+			stat_val = "blah"
+			p.set_nickname(stat_val)
+
+	else:
+		print("\nUnrecognized stat name to pkmnedit: " + str(stat_str) + "\n")
+		return False
+
+	# TODO: also print the replaced value
+	if not move_used:
+		print("\nThe " + stat_str + " of " + p.get_species_name() + " has been changed to " + str(stat_val) + "\n")
+	elif stat_str == "moves":
+		print("\n")
+		for i in range(len(new_moves)):
+			new_move = new_moves[i]
+			print("The Move" + str(i+1) + " of " + p.get_species_name() + " has been changed to " + str(new_move))
+		print("\n")
+	else:
+		print("\nThe " + stat_str + " of " + p.get_species_name() + " has been changed to " + str(new_move) + "\n")
 
 	end_timer()
 	return True
