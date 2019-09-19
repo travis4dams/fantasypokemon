@@ -20,7 +20,7 @@ The contributors to this project do not assume any legal responsibility for any 
 
 ----- Introduction -----
 
-These scripts are intended to generate teams of random Pokemon that meet certain rules. These teams can then be converted into commands used by the program "PkHex" to modify the save of a Game Boy Color (GBC) game (ROM) file so that the teams are available for play in an emulated Pokemon Stadium 2. :)
+In their current state, these scripts generate teams of random Pokemon that meet certain rules. These teams can then be converted into commands used by the program "PkHex" to modify the save of a Game Boy Color (GBC) game (ROM) file so that the teams are available for play in an emulated Pokemon Stadium 2. :)
 
 The standard use case is as simple as running the python script, pasting the output from the script into PkHex to modify the GBC save file, and booting the emulator. 
 
@@ -69,24 +69,27 @@ pytest - python testing library
 
 This script is currently only tested on a standard Windows 10 operating system.
 
-To run this script, the following programs are needed:
---- Python3 (https://www.python.org/download/releases/3.0/)
---- PkHex (https://projectPokemon.org/home/files/file/1-pkhex/)
---- N64 Emulator (https://www.pj64-emu.com/download/project64-latest)
-	--- I use Project64 v2.2.0.3. However as of 8.7.19 they seem to be up to v2.3.2-202. If you get a recent version I'm sure it'll work fine.
+To run this script, you need to 1) install a few programs, 2) install two python libraries, 3) download 2 game files, and 4) setup and run the programs.
 
-To run this script, the following Python library dependencies must be installed (i.e. via "pip install")
---- Pokepy (https://github.com/PokeAPI/pokepy)
---- pytest (http://doc.pytest.org/en/latest/getting-started.html)
+1) Programs
+--- Python3 https://www.python.org/download/releases/3.0/
+--- PkHex https://projectPokemon.org/home/files/file/1-pkhex/
+--- N64 Emulator https://www.pj64-emu.com/download/project64-latest
+	(I use Project64 v2.2.0.3, however as of 8/7/19 they are up to v2.3.2-202. A more recent version should work too.)
 
-To run this script, the following files are needed (as noted in the copyright disclaimer, the contributors to this project will NEVER supply ROMs or information on how to obtain them):
+2) Python libraries
+(The following dependencies can be installed via "pip install")
+--- Pokepy https://github.com/PokeAPI/pokepy
+--- pytest http://doc.pytest.org/en/latest/getting-started.html
+
+3) Necessary files
 --- N64 ROM file for Pokemon Stadium 2 
 --- GBC ROM and .sav file for Pokemon Gold, Silver or Crystal. 
-
 NOTE: The .sav file MUST have the first 6 slots of Box 1 filled with any Pokemon.
 
 DISCLAIMER: MAKE A COPY OF THE SAVE FILE IF IT CONTAINS POKEMON YOU CARE ABOUT. The program works by OVERWRITING EXISTING POKEMON in Box 1, so obviously you don't want any Pokemon in the save file that you intend to keep.
 
+4) Setup and Run Programs
 Step 1: Emulator Setup 
 You need to give your N64 Emulator the location of your GBC ROM and .sav files you intend to load into Pokemon Stadium for play. Make sure to plug in any controllers you intend to use before starting the emulator. You should be able to share a keyboard for multiplayer games if desired. (Because of the way the original N64 worked, your emulator may associate GBC save files with your controller. You may also want to setup your controller input and N64 ROM folder settings if you haven't already).
 
