@@ -20,7 +20,7 @@ The contributors to this project do not assume any legal responsibility for any 
 
 ----- Introduction -----
 
-These scripts are intended to generate teams of random Pokemon that meet certain rules. These teams can then be converted into commands used by the program "PkHex" to modify the save of a Game Boy Color (GBC) game (ROM) file so that the teams are available for play in Pokemon Stadium 2. :)
+These scripts are intended to generate teams of random Pokemon that meet certain rules. These teams can then be converted into commands used by the program "PkHex" to modify the save of a Game Boy Color (GBC) game (ROM) file so that the teams are available for play in an emulated Pokemon Stadium 2. :)
 
 The standard use case is as simple as running the python script, pasting the output from the script into PkHex to modify the GBC save file, and booting the emulator. 
 
