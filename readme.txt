@@ -14,7 +14,7 @@ This project is intended to expand the programming skills and experience of the 
 
 The contributors to this project do not condone illegally obtaining copyrighted software. This project will not supply ROMs or other related files (or information on how to obtain them) to users. The user is assumed to have obtained such files by legal means. Furthermore, in its current state as of 8.7.19, this project does not even directly interact with ROMs or other related files. 
 
-The contributors to this project do not assume any legal responsibility for any client's misuse of software, including but limited to misrepresenting the Pokemon franchise or using this program to earn revenue in an illegal fashion.
+The contributors to this project do not assume any legal responsibility for any client's misuse of software, including but not limited to misrepresenting the Pokemon franchise or using this program to earn revenue in an illegal fashion.
 
 
 
